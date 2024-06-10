@@ -46,10 +46,16 @@ public class PlayerController : MonoBehaviour
         // 플레이어 인풋 액션
         playerInputAction = new PlayerInputActions();
 
+        // 메인 카메라 찾기
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;                   // 카메라 설정
+        }
+
         // 오브젝트 배열 초기화
         if (finishedObjectArray == null || finishedObjectArray.Length == 0)
         {
-            finishedObjectArray = new GameObject[10]; // 크기 설정
+            finishedObjectArray = new GameObject[10];   // 크기 설정
         }
     }
 
