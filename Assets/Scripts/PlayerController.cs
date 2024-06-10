@@ -22,6 +22,11 @@ public class PlayerController : MonoBehaviour
     GameObject draggedObject;
 
     /// <summary>
+    /// 배치 완료된 오브젝트
+    /// </summary>
+    GameObject finishedObject;
+
+    /// <summary>
     /// 메인 카메라
     /// </summary>
     public Camera mainCamera;
@@ -60,13 +65,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // 오브젝트를 드래그 중인 경우
-        if (isDragging && draggedObject != null)
-        {
-            Vector2 mousePosition = Mouse.current.position.ReadValue();             // 마우스 위치
-            Vector2 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);   // 월드 좌표로 변환
-            draggedObject.transform.position = worldPosition;                       // 오브젝트 위치 갱신
-        }
+        OnDrag();
     }
 
     /// <summary>
@@ -80,20 +79,17 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            OnCancel();
+            OnRelease();
         }
     }
 
     /// <summary>
     /// 마우스 오른쪽 버튼 클릭 처리 함수
     /// </summary>
-    /// <param name="context"></param>
-    private void OnRightClickInput(InputAction.CallbackContext context)
+    private void OnRightClickInput(InputAction.CallbackContext _)
     {
-        if (!context.canceled)
-        {
-            OnCancel();
-        }
+        finishedObject = draggedObject;
+        OnCancel();
     }
 
     /// <summary>
@@ -111,7 +107,7 @@ public class PlayerController : MonoBehaviour
         // 충돌 확인
         if (hit.collider != null)
         {
-            // 오브젝트 저장
+            // 선택한 오브젝트 저장
             GameObject clickedObject = hit.collider.gameObject;
 
             // 클릭된 오브젝트가 "Clickable" 태그를 가지고 있는지 확인
@@ -139,15 +135,43 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 취소 처리 함수
+    /// 드래그 처리 함수
     /// </summary>
-    void OnCancel()
+    void OnDrag()
     {
+        // 오브젝트를 드래그 중인 경우
+        if (isDragging && draggedObject != null)
+        {
+            Vector2 mousePosition = Mouse.current.position.ReadValue();             // 마우스 위치
+            Vector2 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);   // 월드 좌표로 변환
+            draggedObject.transform.position = worldPosition;                       // 오브젝트 위치 갱신
+        }
+    }
+
+    /// <summary>
+    /// 선택 취소 처리 함수
+    /// </summary>
+    void OnRelease()
+    {
+        // 오브젝트를 드래그 중인 경우
         if (isDragging && draggedObject != null)
         {
             draggedObject.transform.position = originalPosition;    // 오브젝트를 원래 위치로 되돌림
             draggedObject = null;                                   // 드래그 중인 오브젝트 해제
             isDragging = false;                                     // 드래그 상태 비활성화
+        }
+    }
+
+    /// <summary>
+    /// 배치 취소 처리 함수
+    /// </summary>
+    void OnCancel()
+    {
+        // 배치 완료된 오브젝트가 있는 경우
+        if (finishedObject != null)
+        {
+            finishedObject.transform.position = originalPosition;    // 오브젝트를 원래 위치로 되돌림
+            finishedObject = null;                                   // 드래그 중인 오브젝트 해제
         }
     }
 
