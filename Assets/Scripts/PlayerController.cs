@@ -17,14 +17,19 @@ public class PlayerController : MonoBehaviour
     Vector2 originalPosition;
 
     /// <summary>
+    /// 오브젝트의 실시간 월드 좌표
+    /// </summary>
+    Vector2 worldPosition;
+
+    /// <summary>
     /// 드래그 중인 오브젝트
     /// </summary>
     GameObject draggedObject;
 
     /// <summary>
-    /// 배치 완료된 오브젝트
+    /// 배치 완료된 오브젝트 배열
     /// </summary>
-    GameObject finishedObject;
+    GameObject[] finishedObjectArray;
 
     /// <summary>
     /// 메인 카메라
@@ -38,7 +43,14 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        // 플레이어 인풋 액션
         playerInputAction = new PlayerInputActions();
+
+        // 오브젝트 배열 초기화
+        if (finishedObjectArray == null || finishedObjectArray.Length == 0)
+        {
+            finishedObjectArray = new GameObject[10]; // 크기 설정
+        }
     }
 
     private void OnEnable()
@@ -75,10 +87,12 @@ public class PlayerController : MonoBehaviour
     {
         if (!context.canceled)
         {
+            // 마우스 왼쪽 버튼을 누른 경우
             OnSelect();
         }
         else
         {
+            // 마우스 왼쪽 버튼을 뗀 경우
             OnRelease();
         }
     }
@@ -86,10 +100,13 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 마우스 오른쪽 버튼 클릭 처리 함수
     /// </summary>
-    private void OnRightClickInput(InputAction.CallbackContext _)
+    private void OnRightClickInput(InputAction.CallbackContext context)
     {
-        finishedObject = draggedObject;
-        OnCancel();
+        if (context.canceled)
+        {
+            // 마우스 오른쪽 버튼을 눌렀다 뗀 경우
+            OnCancel();
+        }
     }
 
     /// <summary>
@@ -142,23 +159,59 @@ public class PlayerController : MonoBehaviour
         // 오브젝트를 드래그 중인 경우
         if (isDragging && draggedObject != null)
         {
-            Vector2 mousePosition = Mouse.current.position.ReadValue();             // 마우스 위치
-            Vector2 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);   // 월드 좌표로 변환
-            draggedObject.transform.position = worldPosition;                       // 오브젝트 위치 갱신
+            Vector2 mousePosition = Mouse.current.position.ReadValue();     // 마우스 위치
+            worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);   // 월드 좌표로 변환
+            draggedObject.transform.position = worldPosition;               // 오브젝트 위치 갱신
         }
     }
 
     /// <summary>
-    /// 선택 취소 처리 함수
+    /// 위치에 따른 배치 처리 함수
     /// </summary>
     void OnRelease()
     {
         // 오브젝트를 드래그 중인 경우
         if (isDragging && draggedObject != null)
         {
-            draggedObject.transform.position = originalPosition;    // 오브젝트를 원래 위치로 되돌림
-            draggedObject = null;                                   // 드래그 중인 오브젝트 해제
-            isDragging = false;                                     // 드래그 상태 비활성화
+            // 나무 꼬지 위치와 근접한 경우
+            float posX = draggedObject.transform.position.x;
+            if (-1 < posX && posX < 1)
+            {
+                draggedObject.transform.position = new Vector2(0.0f, worldPosition.y);  // 오브젝트 위치 설정
+                onDeploy(draggedObject);                                                // 오브젝트 배치 완료
+            }
+            else
+            {
+                draggedObject.transform.position = originalPosition;                    // 오브젝트를 원래 위치로 되돌림
+            }
+
+            draggedObject = null;                                                       // 드래그 중인 오브젝트 해제
+            isDragging = false;                                                         // 드래그 상태 비활성화
+        }
+    }
+
+    /// <summary>
+    /// 배치 완료 처리 함수
+    /// </summary>
+    /// <param name="draggedObject">처리할 오브젝트</param>
+    void onDeploy(GameObject draggedObject)
+    {
+        // 예외 처리
+        if (finishedObjectArray == null || draggedObject == null)
+        {
+            Debug.Log("finishedObjectArray 또는 draggedObject가 없습니다.");
+            return;
+        }
+
+        // 배치 완료 처리
+        for (int i = 0; i < finishedObjectArray.Length; i++)    // 인덱스가 낮은 순서대로
+        {
+            if (finishedObjectArray[i] == null)                 // 배열 중 null인 곳이 있는지 확인
+            {
+                finishedObjectArray[i] = draggedObject;         // 배치 완료된 오브젝트 삽입
+                Debug.Log($"오브젝트가 추가된 인덱스 : {i}");         // 배치된 위치 출력
+                return;
+            }
         }
     }
 
@@ -167,11 +220,23 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void OnCancel()
     {
-        // 배치 완료된 오브젝트가 있는 경우
-        if (finishedObject != null)
+        // 예외 처리
+        if (finishedObjectArray == null)
         {
-            finishedObject.transform.position = originalPosition;    // 오브젝트를 원래 위치로 되돌림
-            finishedObject = null;                                   // 드래그 중인 오브젝트 해제
+            Debug.Log("finishedObjectArray가 없습니다.");
+            return;
+        }
+
+        // 배치 취소 처리
+        for (int i = finishedObjectArray.Length - 1; i >= 0; i--)
+        {
+            if (finishedObjectArray[i] != null)
+            {
+                finishedObjectArray[i].transform.position = originalPosition;    // 오브젝트를 원래 위치로 되돌림
+                finishedObjectArray[i] = null;                                   // 드래그 중인 오브젝트 해제
+                Debug.Log("배치 취소 완료");
+                return;
+            }
         }
     }
 
