@@ -8,6 +8,8 @@ TagManager:
   - Hole1
   - Hole2
   - Hole3
+  - StartTrigger
+  - EndTrigger
   layers:
   - Default
   - TransparentFX

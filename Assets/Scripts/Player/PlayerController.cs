@@ -32,6 +32,11 @@ public class PlayerController : MonoBehaviour
     GameObject[] finishedObjectArray;
 
     /// <summary>
+    /// 막대
+    /// </summary>
+    WoodenSkewer woodenSkewer;
+
+    /// <summary>
     /// 메인 카메라
     /// </summary>
     public Camera mainCamera;
@@ -50,6 +55,12 @@ public class PlayerController : MonoBehaviour
         if (mainCamera == null)
         {
             mainCamera = Camera.main;                   // 카메라 설정
+        }
+
+        // 막대 찾기
+        if (woodenSkewer == null)
+        {
+            woodenSkewer = FindAnyObjectByType<WoodenSkewer>();
         }
 
         // 오브젝트 배열 초기화
@@ -179,9 +190,8 @@ public class PlayerController : MonoBehaviour
         // 오브젝트를 드래그 중인 경우
         if (isDragging && draggedObject != null)
         {
-            // 나무 꼬지 위치와 근접한 경우
-            float posX = draggedObject.transform.position.x;
-            if (-1 < posX && posX < 1)
+            // 나무 막대 시작 부분에 도달한 후 통과 완료한 경우
+            if (woodenSkewer.IsFinished)
             {
                 draggedObject.transform.position = new Vector2(0.0f, worldPosition.y);  // 오브젝트 위치 설정
                 onDeploy(draggedObject);                                                // 오브젝트 배치 완료
@@ -219,6 +229,10 @@ public class PlayerController : MonoBehaviour
                 return;
             }
         }
+
+        // 변수 초기화
+        woodenSkewer.isPassingThrough = false;
+        woodenSkewer.isFinished = false;
     }
 
     /// <summary>
@@ -244,6 +258,10 @@ public class PlayerController : MonoBehaviour
                 return;
             }
         }
+
+        // 변수 초기화
+        woodenSkewer.isPassingThrough = false;
+        woodenSkewer.isFinished = false;
     }
 
     /// <summary>
