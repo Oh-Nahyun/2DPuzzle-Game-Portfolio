@@ -67,14 +67,12 @@ public class PlayerController : MonoBehaviour
 
         playerInputAction.Player.Select.performed += OnLeftClickInput;
         playerInputAction.Player.Select.canceled += OnLeftClickInput;
-
         playerInputAction.Player.Cancel.performed += OnRightClickInput;
     }
 
     private void OnDisable()
     {
         playerInputAction.Player.Cancel.performed -= OnRightClickInput;
-
         playerInputAction.Player.Select.canceled -= OnLeftClickInput;
         playerInputAction.Player.Select.performed -= OnLeftClickInput;
 
@@ -91,6 +89,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnLeftClickInput(InputAction.CallbackContext context)
     {
+        // Debug.Log($"Left Click: {context.phase}");
         if (!context.canceled)
         {
             // 마우스 왼쪽 버튼을 누른 경우
@@ -108,7 +107,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnRightClickInput(InputAction.CallbackContext context)
     {
-        if (!context.canceled)
+        // Debug.Log($"Right Click: {context.phase}");
+        if (context.performed)
         {
             // 마우스 오른쪽 버튼을 누른 경우
             OnCancel();
@@ -228,6 +228,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void OnCancel()
     {
+        Debug.Log("[Cancel] 실행"); /////////////////////////////////////////////
+
         // 예외 처리
         if (finishedObjectArray == null)
         {
