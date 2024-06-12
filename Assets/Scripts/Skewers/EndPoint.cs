@@ -21,16 +21,6 @@ public class EndPoint : MonoBehaviour
         {
             woodenSkewer.isFinished = true;
             Debug.Log("막대의 중간 부분 도착 >> 막대 통과 완료");
-
-            //PerformAction();
         }
-    }
-
-    /// <summary>
-    /// 막대를 통과했을 때 실행할 행동 함수
-    /// </summary>
-    void PerformAction()
-    {
-        Debug.Log("막대 통과 성공!");
     }
 }

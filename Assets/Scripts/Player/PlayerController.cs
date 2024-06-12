@@ -138,7 +138,7 @@ public class PlayerController : MonoBehaviour
             {
                 draggedObject = clickedObject;                          // 드래그 한 오브젝트 설정
                 isDragging = true;                                      // 드래그 상태 활성화
-                originalPosition = OriginalPosition(draggedObject); // 원래 위치 저장
+                originalPosition = OriginalPosition(draggedObject);     // 원래 위치 저장
             }
 
             // 각 구멍에 따른 행동 처리
