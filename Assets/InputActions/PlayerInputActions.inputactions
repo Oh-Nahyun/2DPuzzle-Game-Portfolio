@@ -6,7 +6,7 @@
             "id": "b57436bd-ad0a-4f4f-8a90-5dfe0dbd12f1",
             "actions": [
                 {
-                    "name": "Click",
+                    "name": "Select",
                     "type": "Button",
                     "id": "b9b2527d-1346-4af1-8339-d2e49437a061",
                     "expectedControlType": "Button",
@@ -32,7 +32,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KM",
-                    "action": "Click",
+                    "action": "Select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

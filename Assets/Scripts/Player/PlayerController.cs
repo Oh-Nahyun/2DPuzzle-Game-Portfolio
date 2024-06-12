@@ -32,62 +32,51 @@ public class PlayerController : MonoBehaviour
     GameObject[] finishedObjectArray;
 
     /// <summary>
-    /// 막대
+    /// 플레이어 인풋
+    /// </summary>
+    PlayerInputActions playerInputAction;
+
+    /// <summary>
+    /// 꼬치 막대
     /// </summary>
     WoodenSkewer woodenSkewer;
+
+    /// <summary>
+    /// 꼬치 재료
+    /// </summary>
+    Ingredients ingredients;
 
     /// <summary>
     /// 메인 카메라
     /// </summary>
     public Camera mainCamera;
 
-    /// <summary>
-    /// 플레이어 인풋
-    /// </summary>
-    PlayerInputActions playerInputAction;
-
     private void Awake()
     {
-        // 플레이어 인풋 액션
-        playerInputAction = new PlayerInputActions();
+        playerInputAction = new PlayerInputActions();       // 플레이어 인풋 액션
+        woodenSkewer = FindAnyObjectByType<WoodenSkewer>(); // 꼬치 막대 찾기
+        ingredients = FindAnyObjectByType<Ingredients>();   // 꼬치 재료 찾기
+        mainCamera = Camera.main;                           // 메인 카메라 찾기
 
-        // 메인 카메라 찾기
-        if (mainCamera == null)
-        {
-            mainCamera = Camera.main;                   // 카메라 설정
-        }
-
-        // 막대 찾기
-        if (woodenSkewer == null)
-        {
-            woodenSkewer = FindAnyObjectByType<WoodenSkewer>();
-        }
-
-        // 오브젝트 배열 초기화
-        if (finishedObjectArray == null || finishedObjectArray.Length == 0)
-        {
-            finishedObjectArray = new GameObject[10];   // 크기 설정
-        }
+        finishedObjectArray = new GameObject[10];           // 오브젝트 배열 초기화
     }
 
     private void OnEnable()
     {
         playerInputAction.Player.Enable();
 
-        playerInputAction.Player.Click.performed += OnLeftClickInput;
-        playerInputAction.Player.Click.canceled += OnLeftClickInput;
+        playerInputAction.Player.Select.performed += OnLeftClickInput;
+        playerInputAction.Player.Select.canceled += OnLeftClickInput;
 
         playerInputAction.Player.Cancel.performed += OnRightClickInput;
-        playerInputAction.Player.Cancel.canceled += OnRightClickInput;
     }
 
     private void OnDisable()
     {
-        playerInputAction.Player.Cancel.canceled -= OnRightClickInput;
         playerInputAction.Player.Cancel.performed -= OnRightClickInput;
 
-        playerInputAction.Player.Click.canceled -= OnLeftClickInput;
-        playerInputAction.Player.Click.performed -= OnLeftClickInput;
+        playerInputAction.Player.Select.canceled -= OnLeftClickInput;
+        playerInputAction.Player.Select.performed -= OnLeftClickInput;
 
         playerInputAction.Player.Disable();
     }
@@ -119,9 +108,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void OnRightClickInput(InputAction.CallbackContext context)
     {
-        if (context.canceled)
+        if (!context.canceled)
         {
-            // 마우스 오른쪽 버튼을 눌렀다 뗀 경우
+            // 마우스 오른쪽 버튼을 누른 경우
             OnCancel();
         }
     }
@@ -149,7 +138,7 @@ public class PlayerController : MonoBehaviour
             {
                 draggedObject = clickedObject;                          // 드래그 한 오브젝트 설정
                 isDragging = true;                                      // 드래그 상태 활성화
-                originalPosition = draggedObject.transform.position;    // 원래 위치 저장
+                originalPosition = OriginalPosition(draggedObject); // 원래 위치 저장
             }
 
             // 각 구멍에 따른 행동 처리
@@ -199,6 +188,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 draggedObject.transform.position = originalPosition;                    // 오브젝트를 원래 위치로 되돌림
+                ResetSkewer();
             }
 
             draggedObject = null;                                                       // 드래그 중인 오브젝트 해제
@@ -220,19 +210,17 @@ public class PlayerController : MonoBehaviour
         }
 
         // 배치 완료 처리
-        for (int i = 0; i < finishedObjectArray.Length; i++)    // 인덱스가 낮은 순서대로
+        for (int i = 0; i < finishedObjectArray.Length; i++)    // 인덱스가 작은 순서대로 확인
         {
-            if (finishedObjectArray[i] == null)                 // 배열 중 null인 곳이 있는지 확인
+            if (finishedObjectArray[i] == null)                 // 배열 중 null인 곳이 있는 경우
             {
                 finishedObjectArray[i] = draggedObject;         // 배치 완료된 오브젝트 삽입
-                Debug.Log($"오브젝트가 추가된 인덱스 : {i}");         // 배치된 위치 출력
-                return;
+                Debug.Log($"배치 완료된 인덱스 : {i}");             // 배치 완료된 인덱스 출력
+                break;
             }
         }
 
-        // 변수 초기화
-        woodenSkewer.isPassingThrough = false;
-        woodenSkewer.isFinished = false;
+        ResetSkewer();
     }
 
     /// <summary>
@@ -248,18 +236,50 @@ public class PlayerController : MonoBehaviour
         }
 
         // 배치 취소 처리
-        for (int i = finishedObjectArray.Length - 1; i >= 0; i--)
+        for (int i = finishedObjectArray.Length - 1; i >= 0; i--)               // 인덱스가 큰 순서대로 확인
         {
-            if (finishedObjectArray[i] != null)
+            if (finishedObjectArray[i] != null)                                 // 배열 중 null이 아닌 곳이 있는 경우
             {
-                finishedObjectArray[i].transform.position = originalPosition;    // 오브젝트를 원래 위치로 되돌림
-                finishedObjectArray[i] = null;                                   // 드래그 중인 오브젝트 해제
-                Debug.Log("배치 취소 완료");
-                return;
+                originalPosition = OriginalPosition(finishedObjectArray[i]);    // 원래 위치 재설정
+                finishedObjectArray[i].transform.position = originalPosition;   // 오브젝트를 원래 위치로 되돌림
+                finishedObjectArray[i] = null;                                  // 배치 취소된 오브젝트는 배열에서 삭제
+                Debug.Log($"배치 취소된 인덱스 : {i}");                             // 배치 취소된 인덱스 출력
+                break;
             }
         }
+    }
 
-        // 변수 초기화
+    /// <summary>
+    /// 꼬치 재료의 원래 위치를 반환해주는 함수
+    /// </summary>
+    /// <param name="obj">원래 위치를 확인하고 싶은 오브젝트</param>
+    /// <returns>오브젝트의 원래 위치</returns>
+    Vector2 OriginalPosition(GameObject obj)
+    {
+        switch (obj.name)
+        {
+            case "Meat":
+                originalPosition = ingredients.meatPosition;
+                break;
+            case "Pepper":
+                originalPosition = ingredients.pepperPosition;
+                break;
+            case "Shrimp":
+                originalPosition = ingredients.shrimpPosition;
+                break;
+            case "Tomato":
+                originalPosition = ingredients.tomatoPosition;
+                break;
+        }
+
+        return originalPosition;
+    }
+
+    /// <summary>
+    /// woodenSkewer의 변수를 초기화하는 함수
+    /// </summary>
+    void ResetSkewer()
+    {
         woodenSkewer.isPassingThrough = false;
         woodenSkewer.isFinished = false;
     }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7329120473300584150}
   - component: {fileID: 1208086848095972612}
-  - component: {fileID: 3605516671129340639}
+  - component: {fileID: 1650426927652871562}
   m_Layer: 0
   m_Name: StartPoint
   m_TagString: StartTrigger
@@ -65,7 +65,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 4.7}
+  m_Offset: {x: 0, y: 4.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -76,9 +76,9 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7, y: 0.5}
+  m_Size: {x: 0.7, y: 1}
   m_EdgeRadius: 0
---- !u!114 &3605516671129340639
+--- !u!114 &1650426927652871562
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -90,7 +90,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e6e10e42566402ca10f38c54b61959, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isPassingThrough: 0
 --- !u!1 &3928796703301007837
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3470140974383094569}
   - component: {fileID: 4297558981649062951}
+  - component: {fileID: 2861475393915432506}
   m_Layer: 0
   m_Name: Wooden skewers
   m_TagString: Untagged
@@ -177,6 +177,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2861475393915432506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3928796703301007837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cf560b742edd4522a328f541b5b99ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPassingThrough: 0
+  isFinished: 0
 --- !u!1 &4167196655096206301
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +256,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.6}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -253,7 +267,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.7, y: 7}
+  m_Size: {x: 0.7, y: 5.25}
   m_EdgeRadius: 0
 --- !u!114 &6830826943019819475
 MonoBehaviour:
