@@ -5,7 +5,7 @@ using UnityEngine;
 public class StartPoint : MonoBehaviour
 {
     /// <summary>
-    /// 막대
+    /// 꼬치 막대
     /// </summary>
     WoodenSkewer woodenSkewer;
 

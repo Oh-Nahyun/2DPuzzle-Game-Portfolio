@@ -37,7 +37,7 @@ public class Ingredients : MonoBehaviour
     /// <summary>
     /// 꼬치 재료 [치즈] 오브젝트
     /// </summary>
-    public GameObject cheeseObj;
+    //public GameObject cheeseObj;
 
     /// <summary>
     /// 꼬치 재료 [베이컨]의 원래 위치
@@ -52,7 +52,7 @@ public class Ingredients : MonoBehaviour
     /// <summary>
     /// 꼬치 재료 [베이컨] 오브젝트
     /// </summary>
-    public GameObject baconObj;
+    //public GameObject baconObj;
 
     private void Awake()
     {
@@ -63,10 +63,10 @@ public class Ingredients : MonoBehaviour
 
         cheesePosition = transform.GetChild(4).position;
         cheeseRotation = transform.GetChild(4).rotation;
-        cheeseObj = transform.GetChild(4).gameObject;
+        //cheeseObj = transform.GetChild(4).gameObject;
 
         baconPosition = transform.GetChild(5).position;
         baconRotation = transform.GetChild(5).rotation;
-        baconObj = transform.GetChild(5).gameObject;
+        //baconObj = transform.GetChild(5).gameObject;
     }
 }

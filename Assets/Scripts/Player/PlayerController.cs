@@ -11,6 +11,11 @@ public class PlayerController : MonoBehaviour
     bool isDragging = false;
 
     /// <summary>
+    /// 선택한 것이 구멍인지 확인하는 변수
+    /// </summary>
+    //bool isHole = false;
+
+    /// <summary>
     /// 오브젝트의 원래 위치
     /// </summary>
     Vector2 originalPosition;
@@ -29,6 +34,11 @@ public class PlayerController : MonoBehaviour
     /// 드래그 중인 오브젝트
     /// </summary>
     GameObject draggedObject;
+
+    /// <summary>
+    /// 선택한 구멍 오브젝트
+    /// </summary>
+    //GameObject holeObject;
 
     /// <summary>
     /// 배치 완료된 오브젝트 배열
@@ -106,24 +116,26 @@ public class PlayerController : MonoBehaviour
             // 선택한 오브젝트 저장
             GameObject clickedObject = hit.collider.gameObject;
 
-            // 클릭된 오브젝트가 "Clickable" 태그를 가지고 있는지 확인
             if (clickedObject.CompareTag("Clickable"))
             {
+                // 클릭된 오브젝트가 "Clickable" 태그를 가지고 있는지 확인
                 draggedObject = clickedObject;                              // 드래그 한 오브젝트 설정
-                isDragging = true;                                          // 드래그 상태 활성화
+                //isHole = false;                                             // 구멍이 아님을 표시
                 originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
+                isDragging = true;                                          // 드래그 상태 활성화
             }
-
-            // 클릭된 오브젝트가 "Hole1" 또는 "Hole2" 또는 "Hole3" 태그를 가지고 있는지 확인
             else if (clickedObject.CompareTag("Hole1") || clickedObject.CompareTag("Hole2") || clickedObject.CompareTag("Hole3"))
             {
+                // 클릭된 오브젝트가 "Hole1" 또는 "Hole2" 또는 "Hole3" 태그를 가지고 있는지 확인
                 draggedObject = clickedObject.transform.parent.gameObject;  // 드래그 한 오브젝트를 부모로 설정
-                isDragging = true;                                          // 드래그 상태 활성화
+                //holeObject = clickedObject;                                 // 구멍 오브젝트 저장
+                //isHole = true;                                              // 구멍이 맞음을 표시
                 originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
                 originalRotation = OriginalRotation(draggedObject);         // 원래 각도 저장
+                isDragging = true;                                          // 드래그 상태 활성화
             }
 
-            //////////////////////////////////////////////////////////////////// 각 구멍에 따른 행동 처리 (확인용)
+            // 각 구멍에 대한 추가 행동 처리
             if (hit.collider.CompareTag("Hole1"))
             {
                 FirstHoleAction();
@@ -229,6 +241,13 @@ public class PlayerController : MonoBehaviour
         {
             Vector2 mousePosition = Mouse.current.position.ReadValue();     // 마우스 위치
             worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);   // 월드 좌표로 변환
+
+            //if (isHole)
+            //{
+            //    Vector2 holePosition = holeObject.transform.position;
+            //    worldPosition -= holePosition;
+            //}
+
             draggedObject.transform.position = worldPosition;               // 오브젝트 위치 갱신
         }
     }
@@ -303,6 +322,12 @@ public class PlayerController : MonoBehaviour
     void FirstHoleAction()
     {
         Debug.Log("[Hole 1]을 클릭했습니다.");
+
+        // 해당 구멍을 제외한 다른 구멍 비활성화
+        Transform child = draggedObject.transform.GetChild(1);
+        child.gameObject.SetActive(false);
+        child = draggedObject.transform.GetChild(2);
+        child.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -311,6 +336,12 @@ public class PlayerController : MonoBehaviour
     void SecondHoleAction()
     {
         Debug.Log("[Hole 2]을 클릭했습니다.");
+
+        // 해당 구멍을 제외한 다른 구멍 비활성화
+        Transform child = draggedObject.transform.GetChild(0);
+        child.gameObject.SetActive(false);
+        child = draggedObject.transform.GetChild(2);
+        child.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -319,6 +350,12 @@ public class PlayerController : MonoBehaviour
     void ThirdHoleAction()
     {
         Debug.Log("[Hole 3]을 클릭했습니다.");
+
+        // 해당 구멍을 제외한 다른 구멍 비활성화
+        Transform child = draggedObject.transform.GetChild(0);
+        child.gameObject.SetActive(false);
+        child = draggedObject.transform.GetChild(1);
+        child.gameObject.SetActive(false);
     }
 
     /// <summary>
