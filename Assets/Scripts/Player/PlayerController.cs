@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -34,7 +33,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어 인풋
     /// </summary>
-    PlayerInputActions playerInputAction;
+    PlayerInputActions inputActions;
 
     /// <summary>
     /// 꼬치 막대
@@ -53,7 +52,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        playerInputAction = new PlayerInputActions();       // 플레이어 인풋 액션
+        inputActions = new PlayerInputActions();            // 플레이어 인풋 액션
         woodenSkewer = FindAnyObjectByType<WoodenSkewer>(); // 꼬치 막대 찾기
         ingredients = FindAnyObjectByType<Ingredients>();   // 꼬치 재료 찾기
         mainCamera = Camera.main;                           // 메인 카메라 찾기
@@ -63,20 +62,20 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        playerInputAction.Player.Enable();
+        inputActions.Player.Enable();
 
-        playerInputAction.Player.Select.performed += OnLeftClickInput;
-        playerInputAction.Player.Select.canceled += OnLeftClickInput;
-        playerInputAction.Player.Cancel.performed += OnRightClickInput;
+        inputActions.Player.LeftClick.performed += OnSelect;
+        inputActions.Player.LeftClick.canceled += OnRelease;
+        inputActions.Player.RightClick.performed += OnCancel;
     }
 
     private void OnDisable()
     {
-        playerInputAction.Player.Cancel.performed -= OnRightClickInput;
-        playerInputAction.Player.Select.canceled -= OnLeftClickInput;
-        playerInputAction.Player.Select.performed -= OnLeftClickInput;
+        inputActions.Player.RightClick.performed -= OnCancel;
+        inputActions.Player.LeftClick.canceled -= OnRelease;
+        inputActions.Player.LeftClick.performed -= OnSelect;
 
-        playerInputAction.Player.Disable();
+        inputActions.Player.Disable();
     }
 
     private void Update()
@@ -85,40 +84,9 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 마우스 왼쪽 버튼 클릭 처리 함수
-    /// </summary>
-    private void OnLeftClickInput(InputAction.CallbackContext context)
-    {
-        // Debug.Log($"Left Click: {context.phase}");
-        if (!context.canceled)
-        {
-            // 마우스 왼쪽 버튼을 누른 경우
-            OnSelect();
-        }
-        else
-        {
-            // 마우스 왼쪽 버튼을 뗀 경우
-            OnRelease();
-        }
-    }
-
-    /// <summary>
-    /// 마우스 오른쪽 버튼 클릭 처리 함수
-    /// </summary>
-    private void OnRightClickInput(InputAction.CallbackContext context)
-    {
-        // Debug.Log($"Right Click: {context.phase}");
-        if (context.performed)
-        {
-            // 마우스 오른쪽 버튼을 누른 경우
-            OnCancel();
-        }
-    }
-
-    /// <summary>
     /// 선택 처리 함수
     /// </summary>
-    void OnSelect()
+    private void OnSelect(InputAction.CallbackContext _)
     {
         // 마우스 클릭된 위치
         Vector2 mousePosition = Mouse.current.position.ReadValue();
@@ -158,23 +126,9 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 드래그 처리 함수
-    /// </summary>
-    void OnDrag()
-    {
-        // 오브젝트를 드래그 중인 경우
-        if (isDragging && draggedObject != null)
-        {
-            Vector2 mousePosition = Mouse.current.position.ReadValue();     // 마우스 위치
-            worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);   // 월드 좌표로 변환
-            draggedObject.transform.position = worldPosition;               // 오브젝트 위치 갱신
-        }
-    }
-
-    /// <summary>
     /// 위치에 따른 배치 처리 함수
     /// </summary>
-    void OnRelease()
+    private void OnRelease(InputAction.CallbackContext _)
     {
         // 오브젝트를 드래그 중인 경우
         if (isDragging && draggedObject != null)
@@ -183,7 +137,7 @@ public class PlayerController : MonoBehaviour
             if (woodenSkewer.IsFinished)
             {
                 draggedObject.transform.position = new Vector2(0.0f, worldPosition.y);  // 오브젝트 위치 설정
-                onDeploy(draggedObject);                                                // 오브젝트 배치 완료
+                OnDeploy(draggedObject);                                                // 오브젝트 배치 완료
             }
             else
             {
@@ -200,7 +154,7 @@ public class PlayerController : MonoBehaviour
     /// 배치 완료 처리 함수
     /// </summary>
     /// <param name="draggedObject">처리할 오브젝트</param>
-    void onDeploy(GameObject draggedObject)
+    void OnDeploy(GameObject draggedObject)
     {
         // 예외 처리
         if (finishedObjectArray == null || draggedObject == null)
@@ -226,10 +180,8 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 배치 취소 처리 함수
     /// </summary>
-    void OnCancel()
+    private void OnCancel(InputAction.CallbackContext _)
     {
-        Debug.Log("[Cancel] 실행"); /////////////////////////////////////////////
-
         // 예외 처리
         if (finishedObjectArray == null)
         {
@@ -248,6 +200,20 @@ public class PlayerController : MonoBehaviour
                 Debug.Log($"배치 취소된 인덱스 : {i}");                             // 배치 취소된 인덱스 출력
                 break;
             }
+        }
+    }
+
+    /// <summary>
+    /// 드래그 처리 함수
+    /// </summary>
+    void OnDrag()
+    {
+        // 오브젝트를 드래그 중인 경우
+        if (isDragging && draggedObject != null)
+        {
+            Vector2 mousePosition = Mouse.current.position.ReadValue();     // 마우스 위치
+            worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);   // 월드 좌표로 변환
+            draggedObject.transform.position = worldPosition;               // 오브젝트 위치 갱신
         }
     }
 

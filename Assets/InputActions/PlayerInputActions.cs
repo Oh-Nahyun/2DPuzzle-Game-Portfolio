@@ -28,16 +28,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             ""id"": ""b57436bd-ad0a-4f4f-8a90-5dfe0dbd12f1"",
             ""actions"": [
                 {
-                    ""name"": ""Select"",
+                    ""name"": ""LeftClick"",
                     ""type"": ""Button"",
                     ""id"": ""b9b2527d-1346-4af1-8339-d2e49437a061"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Cancel"",
+                    ""name"": ""RightClick"",
                     ""type"": ""Button"",
                     ""id"": ""70b492f9-b1f9-47e7-9abe-3929af253eb7"",
                     ""expectedControlType"": ""Button"",
@@ -54,7 +54,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KM"",
-                    ""action"": ""Select"",
+                    ""action"": ""LeftClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -65,7 +65,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""KM"",
-                    ""action"": ""Cancel"",
+                    ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -93,8 +93,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
 }");
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Select = m_Player.FindAction("Select", throwIfNotFound: true);
-        m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
+        m_Player_LeftClick = m_Player.FindAction("LeftClick", throwIfNotFound: true);
+        m_Player_RightClick = m_Player.FindAction("RightClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -156,14 +156,14 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     // Player
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_Select;
-    private readonly InputAction m_Player_Cancel;
+    private readonly InputAction m_Player_LeftClick;
+    private readonly InputAction m_Player_RightClick;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Select => m_Wrapper.m_Player_Select;
-        public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
+        public InputAction @LeftClick => m_Wrapper.m_Player_LeftClick;
+        public InputAction @RightClick => m_Wrapper.m_Player_RightClick;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -173,22 +173,22 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
-            @Select.started += instance.OnSelect;
-            @Select.performed += instance.OnSelect;
-            @Select.canceled += instance.OnSelect;
-            @Cancel.started += instance.OnCancel;
-            @Cancel.performed += instance.OnCancel;
-            @Cancel.canceled += instance.OnCancel;
+            @LeftClick.started += instance.OnLeftClick;
+            @LeftClick.performed += instance.OnLeftClick;
+            @LeftClick.canceled += instance.OnLeftClick;
+            @RightClick.started += instance.OnRightClick;
+            @RightClick.performed += instance.OnRightClick;
+            @RightClick.canceled += instance.OnRightClick;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
         {
-            @Select.started -= instance.OnSelect;
-            @Select.performed -= instance.OnSelect;
-            @Select.canceled -= instance.OnSelect;
-            @Cancel.started -= instance.OnCancel;
-            @Cancel.performed -= instance.OnCancel;
-            @Cancel.canceled -= instance.OnCancel;
+            @LeftClick.started -= instance.OnLeftClick;
+            @LeftClick.performed -= instance.OnLeftClick;
+            @LeftClick.canceled -= instance.OnLeftClick;
+            @RightClick.started -= instance.OnRightClick;
+            @RightClick.performed -= instance.OnRightClick;
+            @RightClick.canceled -= instance.OnRightClick;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -217,7 +217,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     }
     public interface IPlayerActions
     {
-        void OnSelect(InputAction.CallbackContext context);
-        void OnCancel(InputAction.CallbackContext context);
+        void OnLeftClick(InputAction.CallbackContext context);
+        void OnRightClick(InputAction.CallbackContext context);
     }
 }
