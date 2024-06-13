@@ -16,6 +16,11 @@ public class PlayerController : MonoBehaviour
     Vector2 originalPosition;
 
     /// <summary>
+    /// 오브젝트의 원래 각도
+    /// </summary>
+    Quaternion originalRotation;
+
+    /// <summary>
     /// 오브젝트의 실시간 월드 좌표
     /// </summary>
     Vector2 worldPosition;
@@ -92,8 +97,8 @@ public class PlayerController : MonoBehaviour
         Vector2 mousePosition = Mouse.current.position.ReadValue();
 
         // 레이 이용
-        Ray ray = mainCamera.ScreenPointToRay(mousePosition); // 레이 생성
-        RaycastHit2D hit = Physics2D.GetRayIntersection(ray); // 클릭된 오브젝트를 감지
+        Ray ray = mainCamera.ScreenPointToRay(mousePosition);               // 레이 생성
+        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);               // 클릭된 오브젝트를 감지
 
         // 충돌 확인
         if (hit.collider != null)
@@ -104,12 +109,21 @@ public class PlayerController : MonoBehaviour
             // 클릭된 오브젝트가 "Clickable" 태그를 가지고 있는지 확인
             if (clickedObject.CompareTag("Clickable"))
             {
-                draggedObject = clickedObject;                          // 드래그 한 오브젝트 설정
-                isDragging = true;                                      // 드래그 상태 활성화
-                originalPosition = OriginalPosition(draggedObject);     // 원래 위치 저장
+                draggedObject = clickedObject;                              // 드래그 한 오브젝트 설정
+                isDragging = true;                                          // 드래그 상태 활성화
+                originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
             }
 
-            // 각 구멍에 따른 행동 처리
+            // 클릭된 오브젝트가 "Hole1" 또는 "Hole2" 또는 "Hole3" 태그를 가지고 있는지 확인
+            else if (clickedObject.CompareTag("Hole1") || clickedObject.CompareTag("Hole2") || clickedObject.CompareTag("Hole3"))
+            {
+                draggedObject = clickedObject.transform.parent.gameObject;  // 드래그 한 오브젝트를 부모로 설정
+                isDragging = true;                                          // 드래그 상태 활성화
+                originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
+                originalRotation = OriginalRotation(draggedObject);         // 원래 각도 저장
+            }
+
+            //////////////////////////////////////////////////////////////////// 각 구멍에 따른 행동 처리 (확인용)
             if (hit.collider.CompareTag("Hole1"))
             {
                 FirstHoleAction();
@@ -142,6 +156,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 draggedObject.transform.position = originalPosition;                    // 오브젝트를 원래 위치로 되돌림
+                draggedObject.transform.rotation = originalRotation;                    // 오브젝트를 원래 각도로 되돌림
                 ResetSkewer();
             }
 
@@ -195,6 +210,7 @@ public class PlayerController : MonoBehaviour
             if (finishedObjectArray[i] != null)                                 // 배열 중 null이 아닌 곳이 있는 경우
             {
                 originalPosition = OriginalPosition(finishedObjectArray[i]);    // 원래 위치 재설정
+                originalRotation = OriginalRotation(finishedObjectArray[i]);    // 원래 각도 재설정
                 finishedObjectArray[i].transform.position = originalPosition;   // 오브젝트를 원래 위치로 되돌림
                 finishedObjectArray[i] = null;                                  // 배치 취소된 오브젝트는 배열에서 삭제
                 Debug.Log($"배치 취소된 인덱스 : {i}");                             // 배치 취소된 인덱스 출력
@@ -238,9 +254,38 @@ public class PlayerController : MonoBehaviour
             case "Tomato":
                 originalPosition = ingredients.tomatoPosition;
                 break;
+            case "Cheese":
+                originalPosition = ingredients.cheesePosition;
+                break;
+            case "Bacon":
+                originalPosition = ingredients.baconPosition;
+                break;
         }
 
         return originalPosition;
+    }
+
+    /// <summary>
+    /// 꼬치 재료의 원래 각도를 반환해주는 함수
+    /// </summary>
+    /// <param name="obj">원래 각도를 확인하고 싶은 오브젝트</param>
+    /// <returns>오브젝트의 원래 각도</returns>
+    Quaternion OriginalRotation(GameObject obj)
+    {
+        switch (obj.name)
+        {
+            case "Cheese":
+                originalRotation = ingredients.cheeseRotation;
+                break;
+            case "Bacon":
+                originalRotation = ingredients.baconRotation;
+                break;
+            default:
+                // Debug.Log($"[{obj.name}] 각도 유지");
+                break;
+        }
+
+        return originalRotation;
     }
 
     /// <summary>
@@ -274,6 +319,34 @@ public class PlayerController : MonoBehaviour
     void ThirdHoleAction()
     {
         Debug.Log("[Hole 3]을 클릭했습니다.");
+    }
+
+    /// <summary>
+    //////////////////////////////////////////////////////////////////////////// [완료] 버튼을 누른 경우 처리 함수
+    /// </summary>
+    void isTheEnd()
+    {
+        // 접시까지의 거리 (y좌표)
+        float endPosition = 10.0f;
+
+        // 꼬치 막대 위치 이동
+        Vector2 skewerPosition = woodenSkewer.transform.position;
+        skewerPosition = new Vector2(0, skewerPosition.y + endPosition * Time.deltaTime);
+
+        // 배치 완료된 재료들 위치 이동
+        for (int i = 0; i < finishedObjectArray.Length; i++)
+        {
+            if (finishedObjectArray[i] != null)
+            {
+                Vector2 ingredientPosition = finishedObjectArray[i].transform.position;
+                ingredientPosition = new Vector2(0, ingredientPosition.y + endPosition * Time.deltaTime);
+            }
+            else
+            {
+                Debug.Log("[버튼] 모든 재료 배치 완료");
+                break;
+            }
+        }
     }
 }
 
