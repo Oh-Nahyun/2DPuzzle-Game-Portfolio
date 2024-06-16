@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Rotation",
+                    "name": "HoleMode",
                     "type": "Button",
                     "id": "1ecf0b1d-fcbf-459d-8191-41313f9fe6aa",
                     "expectedControlType": "Button",
@@ -59,11 +59,11 @@
                 {
                     "name": "",
                     "id": "e150e52c-24d9-4d9f-80b7-ce4e206090c0",
-                    "path": "<Keyboard>/enter",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "KM",
-                    "action": "Rotation",
+                    "action": "HoleMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -24,4 +24,11 @@ public class WoodenSkewer : MonoBehaviour
     /// isFinished 확인용 프로퍼티
     /// </summary>
     public bool IsFinished => isFinished;
+
+    /// <summary>
+    /// 선택된 구멍이 무엇인지 확인하는 변수
+    /// </summary>
+    public bool isHole1 = false;
+    public bool isHole2 = false;
+    public bool isHole3 = false;
 }

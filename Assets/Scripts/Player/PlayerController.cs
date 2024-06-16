@@ -78,10 +78,14 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.LeftClick.performed += OnSelect;
         inputActions.Player.LeftClick.canceled += OnRelease;
         inputActions.Player.RightClick.performed += OnCancel;
+
+        //inputActions.Player.HoleMode.performed += OnHoleMode;
     }
 
     private void OnDisable()
     {
+        //inputActions.Player.HoleMode.performed -= OnHoleMode;
+
         inputActions.Player.RightClick.performed -= OnCancel;
         inputActions.Player.LeftClick.canceled -= OnRelease;
         inputActions.Player.LeftClick.performed -= OnSelect;
@@ -112,20 +116,20 @@ public class PlayerController : MonoBehaviour
             // 선택한 오브젝트 저장
             GameObject clickedObject = hit.collider.gameObject;
 
+            // 클릭된 오브젝트가 "Clickable" 태그를 가지고 있는지 확인
             if (clickedObject.CompareTag("Clickable"))
             {
-                // 클릭된 오브젝트가 "Clickable" 태그를 가지고 있는지 확인
                 offset = Vector2.zero;                                      // offset 초기화
                 draggedObject = clickedObject;                              // 드래그 한 오브젝트 설정
                 originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
                 isDragging = true;                                          // 드래그 상태 활성화
             }
+            // 클릭된 오브젝트가 "Hole1" 또는 "Hole2" 또는 "Hole3" 태그를 가지고 있는지 확인
             else if (clickedObject.CompareTag("Hole1") || clickedObject.CompareTag("Hole2") || clickedObject.CompareTag("Hole3"))
             {
-                // 클릭된 오브젝트가 "Hole1" 또는 "Hole2" 또는 "Hole3" 태그를 가지고 있는지 확인
                 Transform holeTransform = clickedObject.transform;
-                CircleCollider2D collider = holeTransform.GetComponent<CircleCollider2D>();
-                offset = -collider.offset;                                  // offset 설정
+                CircleCollider2D holeCollider = holeTransform.GetComponent<CircleCollider2D>();
+                offset = -holeCollider.offset;                              // offset 설정
 
                 draggedObject = holeTransform.parent.gameObject;            // 드래그 한 오브젝트의 부모로 설정
                 originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
@@ -303,8 +307,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void ResetSkewer()
     {
+        // 통과 가능 여부 초기화
         woodenSkewer.isPassingThrough = false;
         woodenSkewer.isFinished = false;
+
+        // 구멍 선택 여부 초기화
+        woodenSkewer.isHole1 = false;
+        woodenSkewer.isHole2 = false;
+        woodenSkewer.isHole3 = false;
     }
 
     /// <summary>
@@ -312,11 +322,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void FirstHoleAction()
     {
+        woodenSkewer.isHole1 = true;
+        woodenSkewer.isHole2 = false;
+        woodenSkewer.isHole3 = false;
         Debug.Log("[Hole 1]을 클릭했습니다.");
-
-        // 해당 구멍을 제외한 다른 구멍 비활성화
-        //hole2.gameObject.SetActive(false);
-        //hole3.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -324,11 +333,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void SecondHoleAction()
     {
+        woodenSkewer.isHole1 = false;
+        woodenSkewer.isHole2 = true;
+        woodenSkewer.isHole3 = false;
         Debug.Log("[Hole 2]을 클릭했습니다.");
-
-        // 해당 구멍을 제외한 다른 구멍 비활성화
-        //hole1.gameObject.SetActive(false);
-        //hole3.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -336,11 +344,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     void ThirdHoleAction()
     {
+        woodenSkewer.isHole1 = false;
+        woodenSkewer.isHole2 = false;
+        woodenSkewer.isHole3 = true;
         Debug.Log("[Hole 3]을 클릭했습니다.");
-
-        // 해당 구멍을 제외한 다른 구멍 비활성화
-        //hole1.gameObject.SetActive(false);
-        //hole2.gameObject.SetActive(false);
     }
 
     /// <summary>
