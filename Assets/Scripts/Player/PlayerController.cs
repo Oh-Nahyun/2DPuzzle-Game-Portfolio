@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,6 +43,11 @@ public class PlayerController : MonoBehaviour
     GameObject[] finishedObjectArray;
 
     /// <summary>
+    /// Shift 키가 눌렸는지 안눌렸는지 확인용 변수
+    /// </summary>
+    bool isShiftPressed = false;
+
+    /// <summary>
     /// 꼬치 막대
     /// </summary>
     WoodenSkewer woodenSkewer;
@@ -80,12 +86,14 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.LeftClick.canceled += OnRelease;
         inputActions.Player.RightClick.performed += OnCancel;
 
-        //inputActions.Player.HoleMode.performed += OnHoleMode;
+        inputActions.Player.HoleMode.performed += OnHoleModeOn;
+        inputActions.Player.HoleMode.canceled += OnHoleModeOff;
     }
 
     private void OnDisable()
     {
-        //inputActions.Player.HoleMode.performed -= OnHoleMode;
+        inputActions.Player.HoleMode.canceled -= OnHoleModeOff;
+        inputActions.Player.HoleMode.performed -= OnHoleModeOn;
 
         inputActions.Player.RightClick.performed -= OnCancel;
         inputActions.Player.LeftClick.canceled -= OnRelease;
@@ -97,6 +105,17 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         OnDrag();
+    }
+
+    private void OnHoleModeOn(InputAction.CallbackContext context)
+    {
+        isShiftPressed = true;
+        Debug.Log("[ShiftPressed] 남은 구멍 중 하나를 선택하시오.");
+    }
+
+    private void OnHoleModeOff(InputAction.CallbackContext context)
+    {
+        isShiftPressed = false;
     }
 
     /// <summary>
@@ -114,42 +133,64 @@ public class PlayerController : MonoBehaviour
         // 충돌 확인
         if (hit.collider != null)
         {
-            // 선택한 오브젝트 저장
-            GameObject clickedObject = hit.collider.gameObject;
+            if (!isShiftPressed)                                                // Shift 키가 안 눌린 경우
+            {
+                // 선택한 오브젝트 저장
+                GameObject clickedObject = hit.collider.gameObject;
 
-            // 클릭된 오브젝트가 "Clickable" 태그를 가지고 있는지 확인
-            if (clickedObject.CompareTag("Clickable"))
-            {
-                offset = Vector2.zero;                                      // offset 초기화
-                draggedObject = clickedObject;                              // 드래그 오브젝트 설정
-                originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
-                isDragging = true;                                          // 드래그 상태 활성화
-            }
-            // 클릭된 오브젝트가 "Hole1" 또는 "Hole2" 또는 "Hole3" 태그를 가지고 있는지 확인
-            else if (clickedObject.CompareTag("Hole1") || clickedObject.CompareTag("Hole2") || clickedObject.CompareTag("Hole3"))
-            {
-                Transform holeTransform = clickedObject.transform;
-                CircleCollider2D holeCollider = holeTransform.GetComponent<CircleCollider2D>();
-                offset = -holeCollider.offset;                              // offset 설정
+                // 클릭된 오브젝트가 "Clickable" 태그를 가지고 있는지 확인
+                if (clickedObject.CompareTag("Clickable"))
+                {
+                    offset = Vector2.zero;                                      // offset 초기화
+                    draggedObject = clickedObject;                              // 드래그 오브젝트 설정
+                    originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
+                    isDragging = true;                                          // 드래그 상태 활성화
+                }
+                // 클릭된 오브젝트가 "Hole1" 또는 "Hole2" 또는 "Hole3" 태그를 가지고 있는지 확인
+                else if (clickedObject.CompareTag("Hole1") || clickedObject.CompareTag("Hole2") || clickedObject.CompareTag("Hole3"))
+                {
+                    Transform holeTransform = clickedObject.transform;
+                    CircleCollider2D holeCollider = holeTransform.GetComponent<CircleCollider2D>();
+                    offset = -holeCollider.offset;                              // offset 설정
 
-                draggedObject = holeTransform.parent.parent.gameObject;     // 드래그 오브젝트 설정
-                originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
-                originalRotation = OriginalRotation(draggedObject);         // 원래 각도 저장
-                isDragging = true;                                          // 드래그 상태 활성화
-            }
+                    draggedObject = holeTransform.parent.parent.gameObject;     // 드래그 오브젝트 설정
+                    originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
+                    originalRotation = OriginalRotation(draggedObject);         // 원래 각도 저장
+                    isDragging = true;                                          // 드래그 상태 활성화
+                }
 
-            // 각 구멍에 대한 추가 행동 처리
-            if (hit.collider.CompareTag("Hole1"))
-            {
-                FirstHoleAction();
+                // 각 구멍에 대한 추가 행동 처리
+                if (hit.collider.CompareTag("Hole1"))
+                {
+                    FirstHoleAction();
+                }
+                else if (hit.collider.CompareTag("Hole2"))
+                {
+                    SecondHoleAction();
+                }
+                else if (hit.collider.CompareTag("Hole3"))
+                {
+                    ThirdHoleAction();
+                }
             }
-            else if (hit.collider.CompareTag("Hole2"))
+            else                                                                // Shift 키가 눌린 경우
             {
-                SecondHoleAction();
-            }
-            else if (hit.collider.CompareTag("Hole3"))
-            {
-                ThirdHoleAction();
+                // 선택한 구멍 저장
+                //GameObject clickedHole = hit.collider.gameObject;
+
+                // 각 구멍에 대한 추가 행동 처리
+                if (hit.collider.CompareTag("Hole1"))
+                {
+                    Debug.Log("Hole1을 선택했다.");
+                }
+                else if (hit.collider.CompareTag("Hole2"))
+                {
+                    Debug.Log("Hole2을 선택했다.");
+                }
+                else if (hit.collider.CompareTag("Hole3"))
+                {
+                    Debug.Log("Hole3을 선택했다.");
+                }
             }
         }
     }
