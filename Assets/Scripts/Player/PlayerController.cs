@@ -268,10 +268,10 @@ public class PlayerController : MonoBehaviour
             case "Tomato":
                 originalPosition = ingredients.tomatoPosition;
                 break;
-            case "Cheese":
+            case "Cheese_Normal":
                 originalPosition = ingredients.cheesePosition;
                 break;
-            case "Bacon":
+            case "Bacon_Normal":
                 originalPosition = ingredients.baconPosition;
                 break;
         }
@@ -288,10 +288,10 @@ public class PlayerController : MonoBehaviour
     {
         switch (obj.name)
         {
-            case "Cheese":
+            case "Cheese_Normal":
                 originalRotation = ingredients.cheeseRotation;
                 break;
-            case "Bacon":
+            case "Bacon_Normal":
                 originalRotation = ingredients.baconRotation;
                 break;
             default:

@@ -27,7 +27,7 @@ public class EndPoint : MonoBehaviour
             if (woodenSkewer.isHole1 && !woodenSkewer.isHole2 && !woodenSkewer.isHole3)
             {
                 woodenSkewer.isFinished = true;
-                Debug.Log("Hole1 통과 완료");
+                // Debug.Log("Hole1 통과 완료");
             }
         }
         else if (collision.CompareTag("Hole2") && woodenSkewer.IsPassingThrough)
@@ -35,7 +35,7 @@ public class EndPoint : MonoBehaviour
             if (!woodenSkewer.isHole1 && woodenSkewer.isHole2 && !woodenSkewer.isHole3)
             {
                 woodenSkewer.isFinished = true;
-                Debug.Log("Hole2 통과 완료");
+                // Debug.Log("Hole2 통과 완료");
             }
         }
         else if (collision.CompareTag("Hole3") && woodenSkewer.IsPassingThrough)
@@ -43,7 +43,7 @@ public class EndPoint : MonoBehaviour
             if (!woodenSkewer.isHole1 && !woodenSkewer.isHole2 && woodenSkewer.isHole3)
             {
                 woodenSkewer.isFinished = true;
-                Debug.Log("Hole3 통과 완료");
+                // Debug.Log("Hole3 통과 완료");
             }
         }
     }
