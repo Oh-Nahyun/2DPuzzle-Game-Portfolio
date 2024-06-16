@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.PlayerSettings;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 선택된 오브젝트와 마우스 사이 거리
     /// </summary>
-    Vector2 offset;
+    public Vector2 offset;
 
     /// <summary>
     /// 드래그 중인 오브젝트
@@ -120,7 +121,7 @@ public class PlayerController : MonoBehaviour
             if (clickedObject.CompareTag("Clickable"))
             {
                 offset = Vector2.zero;                                      // offset 초기화
-                draggedObject = clickedObject;                              // 드래그 한 오브젝트 설정
+                draggedObject = clickedObject;                              // 드래그 오브젝트 설정
                 originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
                 isDragging = true;                                          // 드래그 상태 활성화
             }
@@ -131,7 +132,7 @@ public class PlayerController : MonoBehaviour
                 CircleCollider2D holeCollider = holeTransform.GetComponent<CircleCollider2D>();
                 offset = -holeCollider.offset;                              // offset 설정
 
-                draggedObject = holeTransform.parent.gameObject;            // 드래그 한 오브젝트의 부모로 설정
+                draggedObject = holeTransform.parent.parent.gameObject;     // 드래그 오브젝트 설정
                 originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
                 originalRotation = OriginalRotation(draggedObject);         // 원래 각도 저장
                 isDragging = true;                                          // 드래그 상태 활성화
@@ -164,11 +165,20 @@ public class PlayerController : MonoBehaviour
             // 나무 막대 시작 부분에 도달한 후 통과 완료한 경우
             if (woodenSkewer.IsFinished)
             {
-                draggedObject.transform.position = new Vector2(0.0f, worldPosition.y);  // 오브젝트 위치 설정
+                // 오브젝트 위치 설정
+                if (draggedObject.CompareTag("Clickable"))
+                {
+                    draggedObject.transform.position = new Vector2(0.0f, worldPosition.y);
+                }
+                else
+                {
+                    draggedObject.transform.position = new Vector2(offset.x, worldPosition.y);
+                }
                 OnDeploy(draggedObject);                                                // 오브젝트 배치 완료
             }
             else
             {
+                CheckLayer(draggedObject);
                 draggedObject.transform.position = originalPosition;                    // 오브젝트를 원래 위치로 되돌림
                 draggedObject.transform.rotation = originalRotation;                    // 오브젝트를 원래 각도로 되돌림
                 ResetSkewer();
@@ -223,10 +233,13 @@ public class PlayerController : MonoBehaviour
         {
             if (finishedObjectArray[i] != null)                                 // 배열 중 null이 아닌 곳이 있는 경우
             {
+                CheckLayer(finishedObjectArray[i]);
+
                 originalPosition = OriginalPosition(finishedObjectArray[i]);    // 원래 위치 재설정
                 originalRotation = OriginalRotation(finishedObjectArray[i]);    // 원래 각도 재설정
                 finishedObjectArray[i].transform.position = originalPosition;   // 오브젝트를 원래 위치로 되돌림
                 finishedObjectArray[i] = null;                                  // 배치 취소된 오브젝트는 배열에서 삭제
+
                 Debug.Log($"배치 취소된 인덱스 : {i}");                             // 배치 취소된 인덱스 출력
                 break;
             }
@@ -268,10 +281,10 @@ public class PlayerController : MonoBehaviour
             case "Tomato":
                 originalPosition = ingredients.tomatoPosition;
                 break;
-            case "Cheese_Normal":
+            case "Cheese":
                 originalPosition = ingredients.cheesePosition;
                 break;
-            case "Bacon_Normal":
+            case "Bacon":
                 originalPosition = ingredients.baconPosition;
                 break;
         }
@@ -288,10 +301,10 @@ public class PlayerController : MonoBehaviour
     {
         switch (obj.name)
         {
-            case "Cheese_Normal":
+            case "Cheese":
                 originalRotation = ingredients.cheeseRotation;
                 break;
-            case "Bacon_Normal":
+            case "Bacon":
                 originalRotation = ingredients.baconRotation;
                 break;
             default:
@@ -300,6 +313,20 @@ public class PlayerController : MonoBehaviour
         }
 
         return originalRotation;
+    }
+
+    void CheckLayer(GameObject obj)
+    {
+        if (obj.layer == 6)                                 // 해당 오브젝트가 [치즈]인 경우
+        {
+            Cheese cheese = ingredients.cheese;
+            cheese.CheeseState = Cheese.CheeseMode.Normal;  // 치즈 모드 초기화
+        }
+        else if (obj.layer == 7)                            // 해당 오브젝트가 [베이컨]인 경우
+        {
+            Bacon bacon = ingredients.bacon;
+            bacon.BaconState = Bacon.BaconMode.Normal;      // 베이컨 모드 초기화
+        }
     }
 
     /// <summary>

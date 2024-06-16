@@ -35,9 +35,9 @@ public class Ingredients : MonoBehaviour
     public Quaternion cheeseRotation;
 
     /// <summary>
-    /// 꼬치 재료 [치즈] 트랜스폼
+    /// 꼬치 재료 [치즈]의 부모 트랜스폼
     /// </summary>
-    Transform cheeseObj;
+    Transform cheeseParent;
 
     /// <summary>
     /// 꼬치 재료 [베이컨]의 원래 위치
@@ -50,9 +50,13 @@ public class Ingredients : MonoBehaviour
     public Quaternion baconRotation;
 
     /// <summary>
-    /// 꼬치 재료 [베이컨] 트랜스폼
+    /// 꼬치 재료 [베이컨]의 부모 트랜스폼
     /// </summary>
-    Transform baconObj;
+    Transform baconParent;
+
+    // 치즈와 베이컨
+    public Cheese cheese;
+    public Bacon bacon;
 
     private void Awake()
     {
@@ -61,12 +65,14 @@ public class Ingredients : MonoBehaviour
         shrimpPosition = transform.GetChild(2).position;
         tomatoPosition = transform.GetChild(3).position;
 
-        cheeseObj = transform.GetChild(4);
-        cheesePosition = cheeseObj.GetChild(0).position;
-        cheeseRotation = cheeseObj.GetChild(0).rotation;
+        cheeseParent = transform.GetChild(4);
+        cheesePosition = cheeseParent.position;
+        cheeseRotation = cheeseParent.rotation;
+        cheese = FindAnyObjectByType<Cheese>();
 
-        baconObj = transform.GetChild(5);
-        baconPosition = baconObj.GetChild(0).position;
-        baconRotation = baconObj.GetChild(0).rotation;
+        baconParent = transform.GetChild(5);
+        baconPosition = baconParent.position;
+        baconRotation = baconParent.rotation;
+        bacon = FindAnyObjectByType<Bacon>();
     }
 }

@@ -21,16 +21,23 @@ public class Bacon : MonoBehaviour
     BaconMode baconState = BaconMode.Normal;
 
     /// <summary>
-    /// 베이컨 모드 상태 확인용 프로퍼티
+    /// 베이컨 모드 상태 확인 및 설정용 프로퍼티
     /// </summary>
     public BaconMode BaconState
     {
         get => baconState;
+        set
+        {
+            if (value != baconState)
+            {
+                baconState = value;
+            }
+        }
     }
 
     // 베이컨 프리팹
     GameObject Bacon_0;
-    GameObject Bacon_1;
+    public GameObject Bacon_1;
     GameObject Bacon_2;
     GameObject Bacon_3;
 
@@ -45,11 +52,16 @@ public class Bacon : MonoBehaviour
         BaconModeChange(BaconState);
     }
 
+    private void Update()
+    {
+        BaconModeChange(BaconState);
+    }
+
     /// <summary>
     /// 베이컨 프리팹 활성화 여부 결정용 함수
     /// </summary>
     /// <param name="mode">베이컨 모드</param>
-    void BaconModeChange(BaconMode mode)
+    public void BaconModeChange(BaconMode mode)
     {
         switch (mode)
         {

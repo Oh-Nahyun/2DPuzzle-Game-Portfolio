@@ -21,16 +21,23 @@ public class Cheese : MonoBehaviour
     CheeseMode cheeseState = CheeseMode.Normal;
 
     /// <summary>
-    /// 치즈 모드 상태 확인용 프로퍼티
+    /// 치즈 모드 상태 확인 및 설정용 프로퍼티
     /// </summary>
     public CheeseMode CheeseState
     {
         get => cheeseState;
+        set
+        {
+            if (value != cheeseState)
+            {
+                cheeseState = value;
+            }
+        }
     }
 
     // 치즈 프리팹
     GameObject Cheese_0;
-    GameObject Cheese_1;
+    public GameObject Cheese_1;
     GameObject Cheese_2;
     GameObject Cheese_3;
 
@@ -45,11 +52,16 @@ public class Cheese : MonoBehaviour
         CheeseModeChange(CheeseState);
     }
 
+    private void Update()
+    {
+        CheeseModeChange(CheeseState);
+    }
+
     /// <summary>
     /// 치즈 프리팹 활성화 여부 결정용 함수
     /// </summary>
     /// <param name="mode">치즈 모드</param>
-    void CheeseModeChange(CheeseMode mode)
+    public void CheeseModeChange(CheeseMode mode)
     {
         switch (mode)
         {
