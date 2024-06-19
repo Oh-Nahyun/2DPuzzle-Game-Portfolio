@@ -91,4 +91,12 @@ public class Cheese : MonoBehaviour
                 break;
         }
     }
+
+    /// <summary>
+    /// 구멍 선택 상태 저장용 함수
+    /// </summary>
+    public void SaveCheeseHoleMode(bool one, bool two, bool three)
+    {
+        ////////////////////////////////////////////////////////////////////////////
+    }
 }
