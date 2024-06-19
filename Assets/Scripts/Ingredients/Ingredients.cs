@@ -37,7 +37,7 @@ public class Ingredients : MonoBehaviour
     /// <summary>
     /// 꼬치 재료 [치즈]의 부모 트랜스폼
     /// </summary>
-    Transform cheeseParent;
+    public Transform cheeseParent;
 
     /// <summary>
     /// 꼬치 재료 [베이컨]의 원래 위치
@@ -52,7 +52,7 @@ public class Ingredients : MonoBehaviour
     /// <summary>
     /// 꼬치 재료 [베이컨]의 부모 트랜스폼
     /// </summary>
-    Transform baconParent;
+    public Transform baconParent;
 
     // 치즈와 베이컨
     public Cheese cheese;
