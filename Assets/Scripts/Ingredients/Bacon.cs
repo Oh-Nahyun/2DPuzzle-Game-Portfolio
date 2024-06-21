@@ -14,7 +14,7 @@ public class Bacon : MonoBehaviour
         TwoHoles,
         ThreeHoles,
         NewTwoHoles,
-        NewThreeHoles,
+        NewThreeHoles
     }
 
     /// <summary>

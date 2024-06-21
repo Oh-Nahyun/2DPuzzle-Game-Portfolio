@@ -14,7 +14,7 @@ public class Cheese : MonoBehaviour
         TwoHoles,
         ThreeHoles,
         NewTwoHoles,
-        NewThreeHoles,
+        NewThreeHoles
     }
 
     /// <summary>
