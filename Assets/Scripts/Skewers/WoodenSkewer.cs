@@ -49,11 +49,18 @@ public class WoodenSkewer : MonoBehaviour
     public bool isHole3 = false;
 
     /// <summary>
-    /// Shift 선택이 가능한 상태인지에 대한 변수
+    /// Shift 선택이 가능한 상태인지에 대한 [치즈] 변수
     /// </summary>
-    public bool canChooseHole1 = true;
-    public bool canChooseHole2 = true;
-    public bool canChooseHole3 = true;
+    public bool canChooseCheeseHole1 = true;
+    public bool canChooseCheeseHole2 = true;
+    public bool canChooseCheeseHole3 = true;
+
+    /// <summary>
+    /// Shift 선택이 가능한 상태인지에 대한 [베이컨] 변수
+    /// </summary>
+    public bool canChooseBaconHole1 = true;
+    public bool canChooseBaconHole2 = true;
+    public bool canChooseBaconHole3 = true;
 
     /// <summary>
     /// 플레이어
@@ -94,6 +101,6 @@ public class WoodenSkewer : MonoBehaviour
         Transform firstHole = obj.GetChild(index - 1);
         CircleCollider2D holeCollider = firstHole.GetComponent<CircleCollider2D>();
         player.offset = -holeCollider.offset;
-        Debug.Log(player.offset);
+        // Debug.Log(player.offset);
     }
 }

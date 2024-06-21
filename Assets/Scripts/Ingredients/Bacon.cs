@@ -12,7 +12,9 @@ public class Bacon : MonoBehaviour
         Normal = 0,
         OneHole,
         TwoHoles,
-        ThreeHoles
+        ThreeHoles,
+        NewTwoHoles,
+        NewThreeHoles,
     }
 
     /// <summary>
@@ -40,6 +42,8 @@ public class Bacon : MonoBehaviour
     public GameObject Bacon_1;
     GameObject Bacon_2;
     GameObject Bacon_3;
+    GameObject Bacon_4;
+    GameObject Bacon_5;
 
     private void Awake()
     {
@@ -48,6 +52,8 @@ public class Bacon : MonoBehaviour
         Bacon_1 = transform.GetChild(1).gameObject;
         Bacon_2 = transform.GetChild(2).gameObject;
         Bacon_3 = transform.GetChild(3).gameObject;
+        Bacon_4 = transform.GetChild(4).gameObject;
+        Bacon_5 = transform.GetChild(5).gameObject;
 
         BaconModeChange(BaconState);
     }
@@ -61,7 +67,7 @@ public class Bacon : MonoBehaviour
     /// 베이컨 프리팹 활성화 여부 결정용 함수
     /// </summary>
     /// <param name="mode">베이컨 모드</param>
-    public void BaconModeChange(BaconMode mode)
+    void BaconModeChange(BaconMode mode)
     {
         switch (mode)
         {
@@ -70,24 +76,48 @@ public class Bacon : MonoBehaviour
                 Bacon_1.SetActive(false);
                 Bacon_2.SetActive(false);
                 Bacon_3.SetActive(false);
+                Bacon_4.SetActive(false);
+                Bacon_5.SetActive(false);
                 break;
             case BaconMode.OneHole:
                 Bacon_0.SetActive(false);
                 Bacon_1.SetActive(true);
                 Bacon_2.SetActive(false);
                 Bacon_3.SetActive(false);
+                Bacon_4.SetActive(false);
+                Bacon_5.SetActive(false);
                 break;
             case BaconMode.TwoHoles:
                 Bacon_0.SetActive(false);
                 Bacon_1.SetActive(false);
                 Bacon_2.SetActive(true);
                 Bacon_3.SetActive(false);
+                Bacon_4.SetActive(false);
+                Bacon_5.SetActive(false);
                 break;
             case BaconMode.ThreeHoles:
                 Bacon_0.SetActive(false);
                 Bacon_1.SetActive(false);
                 Bacon_2.SetActive(false);
                 Bacon_3.SetActive(true);
+                Bacon_4.SetActive(false);
+                Bacon_5.SetActive(false);
+                break;
+            case BaconMode.NewTwoHoles:
+                Bacon_0.SetActive(false);
+                Bacon_1.SetActive(false);
+                Bacon_2.SetActive(false);
+                Bacon_3.SetActive(false);
+                Bacon_4.SetActive(true);
+                Bacon_5.SetActive(false);
+                break;
+            case BaconMode.NewThreeHoles:
+                Bacon_0.SetActive(false);
+                Bacon_1.SetActive(false);
+                Bacon_2.SetActive(false);
+                Bacon_3.SetActive(false);
+                Bacon_4.SetActive(false);
+                Bacon_5.SetActive(true);
                 break;
         }
     }

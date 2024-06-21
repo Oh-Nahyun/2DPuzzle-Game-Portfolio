@@ -123,13 +123,13 @@ public class PlayerController : MonoBehaviour
         Vector2 mousePosition = Mouse.current.position.ReadValue();
 
         // 레이 이용
-        Ray ray = mainCamera.ScreenPointToRay(mousePosition);               // 레이 생성
-        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);               // 클릭된 오브젝트를 감지
+        Ray ray = mainCamera.ScreenPointToRay(mousePosition);                   // 레이 생성
+        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);                   // 클릭된 오브젝트를 감지
 
         // 충돌 확인
         if (hit.collider != null)
         {
-            if (!isShiftPressed)                                                // Shift 키가 안 눌린 경우
+            if (!isShiftPressed)                                                // [Shift 키가 안 눌린 경우]
             {
                 // 선택한 오브젝트 저장
                 GameObject clickedObject = hit.collider.gameObject;
@@ -169,71 +169,147 @@ public class PlayerController : MonoBehaviour
                     ThirdHoleAction();
                 }
             }
-            else                                                                // Shift 키가 눌린 경우
+            else                                                                // [Shift 키가 눌린 경우]
             {
                 // 선택한 구멍 저장
                 GameObject clickedHole = hit.collider.gameObject;
 
-                ////////////////////////////////////////////////////////// 선택한 구멍에 따라 프리팹 변경 처리
-                if (!woodenSkewer.canChooseHole1)
+                // 선택한 구멍의 부모에 따라 프리팹 변경 처리
+                if (clickedHole.layer == 6)
                 {
-                    if (hit.collider.CompareTag("Hole1"))
+                    if (!woodenSkewer.canChooseCheeseHole1)
                     {
-                        Debug.Log("[Hole1] 선택 불가능");
-                    }
-                    else if(hit.collider.CompareTag("Hole2"))
-                    {
-                        // bool canFinishHole = true; /////////////////////////////
-                    }
-                    else if (hit.collider.CompareTag("Hole3"))
-                    {
-                        if (!woodenSkewer.canChooseHole2)
+                        if (hit.collider.CompareTag("Hole1"))
                         {
-                            CheckLayer(clickedHole, Cheese.CheeseMode.ThreeHoles, Bacon.BaconMode.ThreeHoles);      // 스프라이트 변경
-                            CheckHole(false, false, false);
+                            Debug.Log("[Hole1] 선택 불가능");
                         }
-                        else
+                        else if (hit.collider.CompareTag("Hole2"))
+                        {
+                            ingredients.cheese.CheeseState = Cheese.CheeseMode.NewTwoHoles;                             // 스프라이트 변경
+                            ingredients.cheeseParent.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);                     // 스프라이트 y축 기준 0도 회전
+                            SaveCheeseHole(false, false, true);
+                        }
+                        else if (hit.collider.CompareTag("Hole3"))
+                        {
+                            if (!woodenSkewer.canChooseCheeseHole2)
+                            {
+                                if (ingredients.cheese.CheeseState == Cheese.CheeseMode.TwoHoles)
+                                {
+                                    ingredients.cheese.CheeseState = Cheese.CheeseMode.ThreeHoles;                      // 스프라이트 변경
+                                    SaveCheeseHole(false, false, false);
+                                }
+                                else if (ingredients.cheese.CheeseState == Cheese.CheeseMode.NewTwoHoles)
+                                {
+                                    ingredients.cheese.CheeseState = Cheese.CheeseMode.NewThreeHoles;                   // 스프라이트 변경
+                                    SaveCheeseHole(false, false, false);
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("<<다른 구멍을 클릭해주세요.>>");
+                            }
+                        }
+                    }
+                    else if (!woodenSkewer.canChooseCheeseHole2) // 두번째 구멍을 배치 완료한 경우
+                    {
+                        if (hit.collider.CompareTag("Hole1"))
+                        {
+                            ingredients.cheese.CheeseState = Cheese.CheeseMode.TwoHoles;                                // 스프라이트 변경
+                            ingredients.cheeseParent.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);                     // 스프라이트 y축 기준 0도 회전
+                            SaveCheeseHole(false, false, true);
+                        }
+                        else if (hit.collider.CompareTag("Hole2"))
+                        {
+                            Debug.Log("[Hole2] 선택 불가능");
+                        }
+                        else if (hit.collider.CompareTag("Hole3"))
+                        {
+                            ingredients.cheese.CheeseState = Cheese.CheeseMode.TwoHoles;                                // 스프라이트 변경
+                            ingredients.cheeseParent.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);                   // 스프라이트 y축 기준 180도 회전
+                            SaveCheeseHole(false, false, true);                                                         // 스프라이트가 회전했기 때문에 구멍3을 누르면 구멍1 변수가 false가 된다.
+                        }
+                    }
+                    else if (!woodenSkewer.canChooseCheeseHole3)
+                    {
+                        if (hit.collider.CompareTag("Hole1"))
                         {
                             Debug.Log("<<다른 구멍을 클릭해주세요.>>");
                         }
+                        else if (hit.collider.CompareTag("Hole2"))
+                        {
+                            ingredients.cheese.CheeseState = Cheese.CheeseMode.NewTwoHoles;                             // 스프라이트 변경
+                            ingredients.cheeseParent.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);                   // 스프라이트 y축 기준 180도 회전
+                            SaveCheeseHole(false, false, true);
+                        }
+                        else if (hit.collider.CompareTag("Hole3"))
+                        {
+                            Debug.Log("[Hole3] 선택 불가능");
+                        }
                     }
                 }
-                else if (!woodenSkewer.canChooseHole2) // 두번째 구멍을 배치 완료한 경우
+                else if (clickedHole.layer == 7)
                 {
-                    if (hit.collider.CompareTag("Hole1"))
+                    if (!woodenSkewer.canChooseBaconHole1)
                     {
-                        CheckLayer(clickedHole, Cheese.CheeseMode.TwoHoles, Bacon.BaconMode.TwoHoles);              // 스프라이트 변경
-                        ingredients.cheeseParent.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);                     // 스프라이트 y축 기준 180도 회전
-                        CheckHole(false, false, true);
+                        if (hit.collider.CompareTag("Hole1"))
+                        {
+                            Debug.Log("[Hole1] 선택 불가능");
+                        }
+                        else if (hit.collider.CompareTag("Hole2"))
+                        {
+
+                        }
+                        else if (hit.collider.CompareTag("Hole3"))
+                        {
+                            if (!woodenSkewer.canChooseBaconHole2)
+                            {
+                                ingredients.bacon.BaconState = Bacon.BaconMode.ThreeHoles;                              // 스프라이트 변경
+                                SaveBaconHole(false, false, false);
+                            }
+                            else
+                            {
+                                Debug.Log("<<다른 구멍을 클릭해주세요.>>");
+                            }
+                        }
                     }
-                    else if (hit.collider.CompareTag("Hole2"))
+                    else if (!woodenSkewer.canChooseBaconHole2) // 두번째 구멍을 배치 완료한 경우
                     {
-                        Debug.Log("[Hole2] 선택 불가능");
+                        if (hit.collider.CompareTag("Hole1"))
+                        {
+                            ingredients.bacon.BaconState = Bacon.BaconMode.TwoHoles;                                    // 스프라이트 변경
+                            ingredients.baconParent.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);                      // 스프라이트 y축 기준 0도 회전
+                            SaveBaconHole(false, false, true);
+                        }
+                        else if (hit.collider.CompareTag("Hole2"))
+                        {
+                            Debug.Log("[Hole2] 선택 불가능");
+                        }
+                        else if (hit.collider.CompareTag("Hole3"))
+                        {
+                            ingredients.bacon.BaconState = Bacon.BaconMode.TwoHoles;                                    // 스프라이트 변경
+                            ingredients.baconParent.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);                    // 스프라이트 y축 기준 180도 회전
+                            SaveBaconHole(false, false, true);                                                          // 스프라이트가 회전했기 때문에 구멍3을 누르면 구멍1 변수가 false가 된다.
+                        }
                     }
-                    else if (hit.collider.CompareTag("Hole3"))
+                    else if (!woodenSkewer.canChooseBaconHole3)
                     {
-                        CheckLayer(clickedHole, Cheese.CheeseMode.TwoHoles, Bacon.BaconMode.TwoHoles);              // 스프라이트 변경
-                        ingredients.cheeseParent.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);                   // 스프라이트 y축 기준 180도 회전
-                        CheckHole(false, false, true);                                                              // 스프라이트가 회전했기 때문에 구멍3을 누르면 구멍1 변수가 false가 된다.
+                        if (hit.collider.CompareTag("Hole1"))
+                        {
+                            Debug.Log("<<다른 구멍을 클릭해주세요.>>");
+                        }
+                        else if (hit.collider.CompareTag("Hole2"))
+                        {
+
+                        }
+                        else if (hit.collider.CompareTag("Hole3"))
+                        {
+                            Debug.Log("[Hole3] 선택 불가능");
+                        }
                     }
                 }
-                else if (!woodenSkewer.canChooseHole3)
-                {
-                    if (hit.collider.CompareTag("Hole1"))
-                    {
-                        Debug.Log("<<다른 구멍을 클릭해주세요.>>");
-                    }
-                    else if (hit.collider.CompareTag("Hole2"))
-                    {
 
-                    }
-                    else if (hit.collider.CompareTag("Hole3"))
-                    {
-                        Debug.Log("[Hole3] 선택 불가능");
-                    }
-                }
-
-                Debug.Log($"{woodenSkewer.canChooseHole1}, {woodenSkewer.canChooseHole2}, {woodenSkewer.canChooseHole3}");
+                Debug.Log($"[Cheese] : ({woodenSkewer.canChooseCheeseHole1}, {woodenSkewer.canChooseCheeseHole2}, {woodenSkewer.canChooseCheeseHole3})");
+                Debug.Log($"[Bacon] : ({woodenSkewer.canChooseBaconHole1}, {woodenSkewer.canChooseBaconHole2}, {woodenSkewer.canChooseBaconHole3})");
             }
         }
     }
@@ -256,37 +332,14 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    /////////////////////////////////////////////// Shift 선택이 가능한 상태인지에 대한 변수 설정
+                    // Shift 선택이 가능한 상태인지에 대한 변수 설정
                     if (draggedObject.layer == 6)
                     {
-                        if (woodenSkewer.isHole1)
-                        {
-                            woodenSkewer.canChooseHole1 = false;
-                        }
-                        else if (woodenSkewer.isHole2)
-                        {
-                            woodenSkewer.canChooseHole2 = false;
-                        }
-                        else if (woodenSkewer.isHole3)
-                        {
-                            woodenSkewer.canChooseHole3 = false;
-                        }
+                        SetCheeseHole(false, false, false);
                     }
                     else if (draggedObject.layer == 7)
                     {
-                        //////////////////////////////////////////////////// 치즈와 베이컨 bool 변수 나누기!!!!!!!!!!!!!!!!!!!!!
-                        if (woodenSkewer.isHole1)
-                        {
-                            woodenSkewer.canChooseHole1 = false;
-                        }
-                        else if (woodenSkewer.isHole2)
-                        {
-                            woodenSkewer.canChooseHole2 = false;
-                        }
-                        else if (woodenSkewer.isHole3)
-                        {
-                            woodenSkewer.canChooseHole3 = false;
-                        }
+                        SetBaconHole(false, false, false);
                     }
 
                     draggedObject.transform.position = new Vector2(offset.x, worldPosition.y);
@@ -300,9 +353,7 @@ public class PlayerController : MonoBehaviour
                 draggedObject.transform.rotation = originalRotation;                            // 오브젝트를 원래 각도로 되돌림
 
                 ResetSkewer();                                                                  // 변수 초기화
-                woodenSkewer.canChooseHole1 = true;                                             // 선택 가능 구멍 초기화
-                woodenSkewer.canChooseHole2 = true;
-                woodenSkewer.canChooseHole3 = true;
+                ResetAllHole();                                                                 // 선택 가능 구멍 초기화
             }
 
             draggedObject = null;                                                               // 드래그 중인 오브젝트 해제
@@ -366,10 +417,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // 선택 가능 구멍 초기화
-        woodenSkewer.canChooseHole1 = true;
-        woodenSkewer.canChooseHole2 = true;
-        woodenSkewer.canChooseHole3 = true;
+        ResetAllHole();                                                         // 선택 가능 구멍 초기화
     }
 
     /// <summary>
@@ -385,6 +433,8 @@ public class PlayerController : MonoBehaviour
             draggedObject.transform.position = worldPosition + offset;      // 오브젝트 위치 갱신
         }
     }
+
+    // 위치 및 회전 관련 함수 -------------------------------------------------------
 
     /// <summary>
     /// 꼬치 재료의 원래 위치를 반환해주는 함수
@@ -441,6 +491,48 @@ public class PlayerController : MonoBehaviour
         return originalRotation;
     }
 
+    // 세팅 관련 함수 -------------------------------------------------------------
+
+    /// <summary>
+    /// Shift 선택이 가능한 상태인지에 대한 [치즈] 변수 설정
+    /// </summary>
+    public void SetCheeseHole(bool one, bool two, bool three)
+    {
+        if (woodenSkewer.isHole1)
+        {
+            woodenSkewer.canChooseCheeseHole1 = one;
+        }
+        else if (woodenSkewer.isHole2)
+        {
+            woodenSkewer.canChooseCheeseHole2 = two;
+        }
+        else if (woodenSkewer.isHole3)
+        {
+            woodenSkewer.canChooseCheeseHole3 = three;
+        }
+    }
+
+    /// <summary>
+    /// Shift 선택이 가능한 상태인지에 대한 [베이컨] 변수 설정
+    /// </summary>
+    public void SetBaconHole(bool one, bool two, bool three)
+    {
+        if (woodenSkewer.isHole1)
+        {
+            woodenSkewer.canChooseBaconHole1 = one;
+        }
+        else if (woodenSkewer.isHole2)
+        {
+            woodenSkewer.canChooseBaconHole2 = two;
+        }
+        else if (woodenSkewer.isHole3)
+        {
+            woodenSkewer.canChooseBaconHole3 = three;
+        }
+    }
+
+    // 확인 관련 함수 -------------------------------------------------------------
+
     /// <summary>
     /// 초기화를 위한 오브젝트 레이어 비교 함수
     /// </summary>
@@ -467,21 +559,40 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 저장 관련 함수 -------------------------------------------------------------
+
     /// <summary>
-    /// 구멍 선택에 대한 저장용 함수
+    /// [치즈] 구멍 선택에 대한 저장용 함수
     /// </summary>
     /// <param name="one">첫번째 구멍 선택 가능 여부</param>
     /// <param name="two">두번째 구멍 선택 가능 여부</param>
     /// <param name="three">세번째 구멍 선택 가능 여부</param>
-    void CheckHole(bool one, bool two, bool three)
+    void SaveCheeseHole(bool one, bool two, bool three)
     {
-        woodenSkewer.canChooseHole1 = one;
-        woodenSkewer.canChooseHole2 = two;
-        woodenSkewer.canChooseHole3 = three;
+        
+        woodenSkewer.canChooseCheeseHole1 = one;
+        woodenSkewer.canChooseCheeseHole2 = two;
+        woodenSkewer.canChooseCheeseHole3 = three;
     }
 
     /// <summary>
-    /// woodenSkewer의 변수를 초기화하는 함수
+    /// [베이컨] 구멍 선택에 대한 저장용 함수
+    /// </summary>
+    /// <param name="one">첫번째 구멍 선택 가능 여부</param>
+    /// <param name="two">두번째 구멍 선택 가능 여부</param>
+    /// <param name="three">세번째 구멍 선택 가능 여부</param>
+    void SaveBaconHole(bool one, bool two, bool three)
+    {
+
+        woodenSkewer.canChooseBaconHole1 = one;
+        woodenSkewer.canChooseBaconHole2 = two;
+        woodenSkewer.canChooseBaconHole3 = three;
+    }
+
+    // 초기화 관련 함수 -----------------------------------------------------------
+
+    /// <summary>
+    /// woodenSkewer의 변수 초기화용 함수
     /// </summary>
     void ResetSkewer()
     {
@@ -493,11 +604,20 @@ public class PlayerController : MonoBehaviour
         woodenSkewer.isHole1 = false;
         woodenSkewer.isHole2 = false;
         woodenSkewer.isHole3 = false;
+    }
 
-        // Shift 선택 상태 초기화
-        //woodenSkewer.canChooseHole1 = true;
-        //woodenSkewer.canChooseHole2 = true;
-        //woodenSkewer.canChooseHole3 = true;
+    /// <summary>
+    /// 선택 가능 구멍 초기화용 함수
+    /// </summary>
+    void ResetAllHole() /////////////////////////////////////////////////////// 게임 오브젝트를 받아서 레이어 처리 안해도 되는지 확인할 것!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    {
+        woodenSkewer.canChooseCheeseHole1 = true;
+        woodenSkewer.canChooseCheeseHole2 = true;
+        woodenSkewer.canChooseCheeseHole3 = true;
+
+        woodenSkewer.canChooseBaconHole1 = true;
+        woodenSkewer.canChooseBaconHole2 = true;
+        woodenSkewer.canChooseBaconHole3 = true;
     }
 
     /// <summary>
@@ -508,7 +628,7 @@ public class PlayerController : MonoBehaviour
         woodenSkewer.isHole1 = true;
         woodenSkewer.isHole2 = false;
         woodenSkewer.isHole3 = false;
-        Debug.Log("[Hole 1]을 클릭했습니다.");
+        // Debug.Log("[Hole 1]을 클릭했습니다.");
     }
 
     /// <summary>
@@ -519,7 +639,7 @@ public class PlayerController : MonoBehaviour
         woodenSkewer.isHole1 = false;
         woodenSkewer.isHole2 = true;
         woodenSkewer.isHole3 = false;
-        Debug.Log("[Hole 2]을 클릭했습니다.");
+        // Debug.Log("[Hole 2]을 클릭했습니다.");
     }
 
     /// <summary>
@@ -530,35 +650,37 @@ public class PlayerController : MonoBehaviour
         woodenSkewer.isHole1 = false;
         woodenSkewer.isHole2 = false;
         woodenSkewer.isHole3 = true;
-        Debug.Log("[Hole 3]을 클릭했습니다.");
+        // Debug.Log("[Hole 3]을 클릭했습니다.");
     }
+
+    // 미완성 함수 ===============================================================
 
     /// <summary>
-    //////////////////////////////////////////////////////////////////////////// [완료] 버튼을 누른 경우 처리 함수
+    // [완료] 버튼을 누른 경우 처리 함수
     /// </summary>
-    void isTheEnd()
-    {
-        // 접시까지의 거리 (y좌표)
-        float endPosition = 10.0f;
+    //void isTheEnd()
+    //{
+    //    // 접시까지의 거리 (y좌표)
+    //    float endPosition = 10.0f;
 
-        // 꼬치 막대 위치 이동
-        Vector2 skewerPosition = woodenSkewer.transform.position;
-        skewerPosition = new Vector2(0, skewerPosition.y + endPosition * Time.deltaTime);
+    //    // 꼬치 막대 위치 이동
+    //    Vector2 skewerPosition = woodenSkewer.transform.position;
+    //    skewerPosition = new Vector2(0, skewerPosition.y + endPosition * Time.deltaTime);
 
-        // 배치 완료된 재료들 위치 이동
-        for (int i = 0; i < finishedObjectArray.Length; i++)
-        {
-            if (finishedObjectArray[i] != null)
-            {
-                Vector2 ingredientPosition = finishedObjectArray[i].transform.position;
-                ingredientPosition = new Vector2(0, ingredientPosition.y + endPosition * Time.deltaTime);
-            }
-            else
-            {
-                Debug.Log("[버튼] 모든 재료 배치 완료");
-                break;
-            }
-        }
-    }
+    //    // 배치 완료된 재료들 위치 이동
+    //    for (int i = 0; i < finishedObjectArray.Length; i++)
+    //    {
+    //        if (finishedObjectArray[i] != null)
+    //        {
+    //            Vector2 ingredientPosition = finishedObjectArray[i].transform.position;
+    //            ingredientPosition = new Vector2(0, ingredientPosition.y + endPosition * Time.deltaTime);
+    //        }
+    //        else
+    //        {
+    //            Debug.Log("[버튼] 모든 재료 배치 완료");
+    //            break;
+    //        }
+    //    }
+    //}
 }
 

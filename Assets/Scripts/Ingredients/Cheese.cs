@@ -12,7 +12,9 @@ public class Cheese : MonoBehaviour
         Normal = 0,
         OneHole,
         TwoHoles,
-        ThreeHoles
+        ThreeHoles,
+        NewTwoHoles,
+        NewThreeHoles,
     }
 
     /// <summary>
@@ -40,6 +42,8 @@ public class Cheese : MonoBehaviour
     public GameObject Cheese_1;
     GameObject Cheese_2;
     GameObject Cheese_3;
+    GameObject Cheese_4;
+    GameObject Cheese_5;
 
     private void Awake()
     {
@@ -48,6 +52,8 @@ public class Cheese : MonoBehaviour
         Cheese_1 = transform.GetChild(1).gameObject;
         Cheese_2 = transform.GetChild(2).gameObject;
         Cheese_3 = transform.GetChild(3).gameObject;
+        Cheese_4 = transform.GetChild(4).gameObject;
+        Cheese_5 = transform.GetChild(5).gameObject;
 
         CheeseModeChange(CheeseState);
     }
@@ -61,7 +67,7 @@ public class Cheese : MonoBehaviour
     /// 치즈 프리팹 활성화 여부 결정용 함수
     /// </summary>
     /// <param name="mode">치즈 모드</param>
-    public void CheeseModeChange(CheeseMode mode)
+    void CheeseModeChange(CheeseMode mode)
     {
         switch (mode)
         {
@@ -70,24 +76,48 @@ public class Cheese : MonoBehaviour
                 Cheese_1.SetActive(false);
                 Cheese_2.SetActive(false);
                 Cheese_3.SetActive(false);
+                Cheese_4.SetActive(false);
+                Cheese_5.SetActive(false);
                 break;
             case CheeseMode.OneHole:
                 Cheese_0.SetActive(false);
                 Cheese_1.SetActive(true);
                 Cheese_2.SetActive(false);
                 Cheese_3.SetActive(false);
+                Cheese_4.SetActive(false);
+                Cheese_5.SetActive(false);
                 break;
             case CheeseMode.TwoHoles:
                 Cheese_0.SetActive(false);
                 Cheese_1.SetActive(false);
                 Cheese_2.SetActive(true);
                 Cheese_3.SetActive(false);
+                Cheese_4.SetActive(false);
+                Cheese_5.SetActive(false);
                 break;
             case CheeseMode.ThreeHoles:
                 Cheese_0.SetActive(false);
                 Cheese_1.SetActive(false);
                 Cheese_2.SetActive(false);
                 Cheese_3.SetActive(true);
+                Cheese_4.SetActive(false);
+                Cheese_5.SetActive(false);
+                break;
+            case CheeseMode.NewTwoHoles:
+                Cheese_0.SetActive(false);
+                Cheese_1.SetActive(false);
+                Cheese_2.SetActive(false);
+                Cheese_3.SetActive(false);
+                Cheese_4.SetActive(true);
+                Cheese_5.SetActive(false);
+                break;
+            case CheeseMode.NewThreeHoles:
+                Cheese_0.SetActive(false);
+                Cheese_1.SetActive(false);
+                Cheese_2.SetActive(false);
+                Cheese_3.SetActive(false);
+                Cheese_4.SetActive(false);
+                Cheese_5.SetActive(true);
                 break;
         }
     }
