@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour
     private void OnHoleModeOn(InputAction.CallbackContext context)
     {
         isShiftPressed = true;
-        Debug.Log("[ShiftPressed] 남은 구멍 중 하나를 선택하시오.");
+        // Debug.Log("[ShiftPressed] 남은 구멍 중 하나를 선택하시오.");
     }
 
     private void OnHoleModeOff(InputAction.CallbackContext context)
@@ -350,7 +350,7 @@ public class PlayerController : MonoBehaviour
                 {
                     draggedObject.transform.position = new Vector2(0.0f, worldPosition.y);
                 }
-                else
+                else if (draggedObject.CompareTag("Hole1") || draggedObject.CompareTag("Hole2") || draggedObject.CompareTag("Hole3"))
                 {
                     // Shift 선택이 가능한 상태인지에 대한 변수 설정
                     if (draggedObject.layer == 6)
