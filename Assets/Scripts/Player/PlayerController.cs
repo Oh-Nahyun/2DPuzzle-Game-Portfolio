@@ -65,13 +65,13 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        inputActions = new PlayerInputActions();            // 플레이어 인풋 액션
-        mainCamera = Camera.main;                           // 메인 카메라 찾기
+        inputActions = new PlayerInputActions();                // 플레이어 인풋 액션
+        mainCamera = Camera.main;                               // 메인 카메라 찾기
 
-        woodenSkewer = FindAnyObjectByType<WoodenSkewer>(); // 꼬치 막대 찾기
-        ingredients = FindAnyObjectByType<Ingredients>();   // 꼬치 재료 찾기
+        woodenSkewer = FindAnyObjectByType<WoodenSkewer>();     // 꼬치 막대 찾기
+        ingredients = FindAnyObjectByType<Ingredients>();       // 꼬치 재료 찾기
 
-        finishedObjectArray = new GameObject[10];           // 오브젝트 배열 초기화
+        finishedObjectArray = new GameObject[10];               // 오브젝트 배열 초기화
     }
 
     private void OnEnable()
@@ -186,7 +186,8 @@ public class PlayerController : MonoBehaviour
                         else if (hit.collider.CompareTag("Hole2"))
                         {
                             ingredients.cheese.CheeseState = Cheese.CheeseMode.NewTwoHoles;                             // 스프라이트 변경
-                            ingredients.cheeseParent.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);                     // 스프라이트 y축 기준 0도 회전
+                            ingredients.cheeseParent.position -= new Vector3(4.25f, 0.0f, 0.0f);                        // 스프라이트 위치 이동
+                            ingredients.cheeseParent.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);                   // 스프라이트 y축 기준 180도 회전
                             SaveCheeseHole(false, false, true);
                         }
                         else if (hit.collider.CompareTag("Hole3"))
@@ -238,7 +239,8 @@ public class PlayerController : MonoBehaviour
                         else if (hit.collider.CompareTag("Hole2"))
                         {
                             ingredients.cheese.CheeseState = Cheese.CheeseMode.NewTwoHoles;                             // 스프라이트 변경
-                            ingredients.cheeseParent.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);                   // 스프라이트 y축 기준 180도 회전
+                            ingredients.cheeseParent.position += new Vector3(4.25f, 0.0f, 0.0f);                        // 스프라이트 위치 이동
+                            ingredients.cheeseParent.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);                     // 스프라이트 y축 기준 0도 회전
                             SaveCheeseHole(false, false, true);
                         }
                         else if (hit.collider.CompareTag("Hole3"))
