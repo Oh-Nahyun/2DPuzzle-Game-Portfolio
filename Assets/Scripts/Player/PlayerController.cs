@@ -39,6 +39,17 @@ public class PlayerController : MonoBehaviour
     GameObject[] finishedObjectArray;
 
     /// <summary>
+    /// 오브젝트의 원래 레이어
+    /// </summary>
+    LayerMask originalLayer;
+
+    /// <summary>
+    /// 배치 완료 표시용 레이어
+    /// (마우스 왼쪽 버튼 입력 무시)
+    /// </summary>
+    LayerMask ignoreLeftClickLayer;
+
+    /// <summary>
     /// Shift 키가 눌렸는지 안눌렸는지 확인용 변수
     /// </summary>
     bool isShiftPressed = false;
@@ -74,6 +85,11 @@ public class PlayerController : MonoBehaviour
         finishedObjectArray = new GameObject[10];               // 오브젝트 배열 초기화
     }
 
+    private void Start()
+    {
+        ignoreLeftClickLayer = LayerMask.NameToLayer("IgnoreLeftClick");    // 무시할 레이어 설정
+    }
+
     private void OnEnable()
     {
         inputActions.Player.Enable();
@@ -106,7 +122,6 @@ public class PlayerController : MonoBehaviour
     private void OnHoleModeOn(InputAction.CallbackContext context)
     {
         isShiftPressed = true;
-        // Debug.Log("[ShiftPressed] 남은 구멍 중 하나를 선택하시오.");
     }
 
     private void OnHoleModeOff(InputAction.CallbackContext context)
@@ -123,16 +138,18 @@ public class PlayerController : MonoBehaviour
         Vector2 mousePosition = Mouse.current.position.ReadValue();
 
         // 레이 이용
-        Ray ray = mainCamera.ScreenPointToRay(mousePosition);                   // 레이 생성
-        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);                   // 클릭된 오브젝트를 감지
+        Ray ray = mainCamera.ScreenPointToRay(mousePosition); // 레이 생성
+        RaycastHit2D hit = Physics2D.GetRayIntersection(ray); // 클릭된 오브젝트 감지
+        //RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity, ~ignoreLeftClickLayer); // 특정 레이어를 무시하는 레이캐스트
 
         // 충돌 확인
         if (hit.collider != null)
         {
-            if (!isShiftPressed)                                                // [Shift 키가 안 눌린 경우]
+            if (!isShiftPressed && hit.collider.gameObject.layer != ignoreLeftClickLayer) // [Shift 키가 안 눌리고, 입력 무시 레이어가 아닌 경우]
             {
                 // 선택한 오브젝트 저장
                 GameObject clickedObject = hit.collider.gameObject;
+                Debug.Log(clickedObject); /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 // 클릭된 오브젝트가 "Clickable" 태그를 가지고 있는지 확인
                 if (clickedObject.CompareTag("Clickable"))
@@ -169,7 +186,7 @@ public class PlayerController : MonoBehaviour
                     ThirdHoleAction();
                 }
             }
-            else                                                                // [Shift 키가 눌린 경우]
+            else // [Shift 키가 눌린 경우]
             {
                 // 선택한 구멍 저장
                 GameObject clickedHole = hit.collider.gameObject;
@@ -350,7 +367,7 @@ public class PlayerController : MonoBehaviour
                 {
                     draggedObject.transform.position = new Vector2(0.0f, worldPosition.y);
                 }
-                else if (draggedObject.CompareTag("Hole1") || draggedObject.CompareTag("Hole2") || draggedObject.CompareTag("Hole3"))
+                else ///// if (draggedObject.CompareTag("Hole1") || draggedObject.CompareTag("Hole2") || draggedObject.CompareTag("Hole3"))
                 {
                     // Shift 선택이 가능한 상태인지에 대한 변수 설정
                     if (draggedObject.layer == 6)
@@ -395,17 +412,18 @@ public class PlayerController : MonoBehaviour
         }
 
         // 배치 완료 처리
-        for (int i = 0; i < finishedObjectArray.Length; i++)    // 인덱스가 작은 순서대로 확인
+        for (int i = 0; i < finishedObjectArray.Length; i++)            // 인덱스가 작은 순서대로 확인
         {
-            if (finishedObjectArray[i] == null)                 // 배열 중 null인 곳이 있는 경우
+            if (finishedObjectArray[i] == null)                         // 배열 중 null인 곳이 있는 경우
             {
-                finishedObjectArray[i] = draggedObject;         // 배치 완료된 오브젝트 삽입
-                Debug.Log($"배치 완료된 인덱스 : {i}");             // 배치 완료된 인덱스 출력
+                finishedObjectArray[i] = draggedObject;                 // 배치 완료된 오브젝트 삽입
+                finishedObjectArray[i].layer = ignoreLeftClickLayer;    // 레이어를 "IgnoreLeftClick"으로 변경
+                Debug.Log($"배치 완료된 인덱스 : {i}");                     // 배치 완료된 인덱스 출력
                 break;
             }
         }
 
-        ResetSkewer();                                          // 변수 초기화
+        ResetSkewer();                                                  // 변수 초기화
     }
 
     /// <summary>
@@ -430,6 +448,7 @@ public class PlayerController : MonoBehaviour
                 originalPosition = OriginalPosition(finishedObjectArray[i]);    // 원래 위치 재설정
                 originalRotation = OriginalRotation(finishedObjectArray[i]);    // 원래 각도 재설정
                 finishedObjectArray[i].transform.position = originalPosition;   // 오브젝트를 원래 위치로 되돌림
+                finishedObjectArray[i].layer = originalLayer;                   // 레이어를 "originalLayer"으로 변경
                 finishedObjectArray[i] = null;                                  // 배치 취소된 오브젝트는 배열에서 삭제
 
                 Debug.Log($"배치 취소된 인덱스 : {i}");                             // 배치 취소된 인덱스 출력
@@ -561,21 +580,27 @@ public class PlayerController : MonoBehaviour
     /// <param name="baconState">베이컨의 상태</param>
     void CheckLayer(GameObject obj, Cheese.CheeseMode cheeseState, Bacon.BaconMode baconState)
     {
-        if (obj.layer == 6)                                 // 해당 오브젝트가 [치즈]인 경우
+        if (obj.name == "Cheese") // 해당 오브젝트가 [치즈]인 경우
         {
-            ingredients.cheese.CheeseState = cheeseState;   // 치즈 모드 초기화
+            originalLayer = LayerMask.NameToLayer("Cheese");    // 해당 레이어 설정
+            ingredients.cheese.CheeseState = cheeseState;       // 치즈 모드 초기화
             if (cheeseState == Cheese.CheeseMode.Normal)
             {
                 ingredients.cheeseParent.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
             }
         }
-        else if (obj.layer == 7)                            // 해당 오브젝트가 [베이컨]인 경우
+        else if (obj.name == "Bacon") // 해당 오브젝트가 [베이컨]인 경우
         {
-            ingredients.bacon.BaconState = baconState;      // 베이컨 모드 초기화
+            originalLayer = LayerMask.NameToLayer("Bacon");     // 해당 레이어 설정
+            ingredients.bacon.BaconState = baconState;          // 베이컨 모드 초기화
             if (baconState == Bacon.BaconMode.Normal)
             {
                 ingredients.baconParent.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
             }
+        }
+        else
+        {
+            originalLayer = LayerMask.NameToLayer("Default");   // 기본 레이어 설정
         }
     }
 
