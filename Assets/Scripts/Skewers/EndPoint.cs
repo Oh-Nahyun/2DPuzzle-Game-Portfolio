@@ -26,6 +26,7 @@ public class EndPoint : MonoBehaviour
         {
             if (woodenSkewer.isHole1 && !woodenSkewer.isHole2 && !woodenSkewer.isHole3)
             {
+                woodenSkewer.deployFirstHole1 = true;
                 woodenSkewer.isFinished = true;
                 // Debug.Log("Hole1 통과 완료");
             }
@@ -42,6 +43,7 @@ public class EndPoint : MonoBehaviour
         {
             if (!woodenSkewer.isHole1 && !woodenSkewer.isHole2 && woodenSkewer.isHole3)
             {
+                woodenSkewer.deployFirstHole3 = true;
                 woodenSkewer.isFinished = true;
                 // Debug.Log("Hole3 통과 완료");
             }

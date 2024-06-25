@@ -63,6 +63,12 @@ public class WoodenSkewer : MonoBehaviour
     public bool canChooseBaconHole3 = true;
 
     /// <summary>
+    /// 어떤 구멍을 먼저 넣었는지 저장하는 변수
+    /// </summary>
+    public bool deployFirstHole1 = false;
+    public bool deployFirstHole3 = false;
+
+    /// <summary>
     /// 플레이어
     /// </summary>
     PlayerController player;
