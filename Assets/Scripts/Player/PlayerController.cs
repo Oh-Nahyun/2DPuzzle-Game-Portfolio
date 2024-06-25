@@ -149,7 +149,6 @@ public class PlayerController : MonoBehaviour
             {
                 // 선택한 오브젝트 저장
                 GameObject clickedObject = hit.collider.gameObject;
-                Debug.Log(clickedObject); /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 // 클릭된 오브젝트가 "Clickable" 태그를 가지고 있는지 확인
                 if (clickedObject.CompareTag("Clickable"))
@@ -162,10 +161,16 @@ public class PlayerController : MonoBehaviour
                 // 클릭된 오브젝트가 "Hole1" 또는 "Hole2" 또는 "Hole3" 태그를 가지고 있는지 확인
                 else if (clickedObject.CompareTag("Hole1") || clickedObject.CompareTag("Hole2") || clickedObject.CompareTag("Hole3"))
                 {
+                    // 선택한 오브젝트의 부모 레이어가 입력 무시 레이어인 경우
+                    Transform cheeseAndBaconPrefab = clickedObject.transform.parent;
+                    GameObject cheeseAndBacon = cheeseAndBaconPrefab.parent.gameObject;
+                    if (cheeseAndBacon.layer == ignoreLeftClickLayer)
+                        return;                                                 // 뒤쪽 코드 실행 불가
+
+                    // 선택한 오브젝트의 부모 레이어가 입력 무시 레이어가 아닌 경우
                     Transform holeTransform = clickedObject.transform;
                     CircleCollider2D holeCollider = holeTransform.GetComponent<CircleCollider2D>();
                     offset = -holeCollider.offset;                              // offset 설정
-
                     draggedObject = holeTransform.parent.parent.gameObject;     // 드래그 오브젝트 설정
                     originalPosition = OriginalPosition(draggedObject);         // 원래 위치 저장
                     originalRotation = OriginalRotation(draggedObject);         // 원래 각도 저장
