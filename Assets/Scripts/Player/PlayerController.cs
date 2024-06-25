@@ -34,6 +34,12 @@ public class PlayerController : MonoBehaviour
     GameObject draggedObject;
 
     /// <summary>
+    /// 선택한 구멍의 부모의 부모 
+    /// (치즈 또는 베이컨)
+    /// </summary>
+    GameObject cheeseAndBacon;
+
+    /// <summary>
     /// 배치 완료된 오브젝트 배열
     /// </summary>
     GameObject[] finishedObjectArray;
@@ -163,7 +169,7 @@ public class PlayerController : MonoBehaviour
                 {
                     // 선택한 오브젝트의 부모 레이어가 입력 무시 레이어인 경우
                     Transform cheeseAndBaconPrefab = clickedObject.transform.parent;
-                    GameObject cheeseAndBacon = cheeseAndBaconPrefab.parent.gameObject;
+                    cheeseAndBacon = cheeseAndBaconPrefab.parent.gameObject;
                     if (cheeseAndBacon.layer == ignoreLeftClickLayer)
                         return;                                                 // 뒤쪽 코드 실행 불가
 
@@ -386,7 +392,9 @@ public class PlayerController : MonoBehaviour
 
                     draggedObject.transform.position = new Vector2(offset.x, worldPosition.y);
                 }
-                OnDeploy(draggedObject);                                                        // 오브젝트 배치 완료
+
+                // 오브젝트 배치 완료
+                OnDeploy(draggedObject);
             }
             else
             {
@@ -417,18 +425,20 @@ public class PlayerController : MonoBehaviour
         }
 
         // 배치 완료 처리
-        for (int i = 0; i < finishedObjectArray.Length; i++)            // 인덱스가 작은 순서대로 확인
+        for (int i = 0; i < finishedObjectArray.Length; i++)    // 인덱스가 작은 순서대로 확인
         {
-            if (finishedObjectArray[i] == null)                         // 배열 중 null인 곳이 있는 경우
+            // 배열 중 null인 곳이 있는 경우
+            if (finishedObjectArray[i] == null)
             {
-                finishedObjectArray[i] = draggedObject;                 // 배치 완료된 오브젝트 삽입
-                finishedObjectArray[i].layer = ignoreLeftClickLayer;    // 레이어를 "IgnoreLeftClick"으로 변경
-                Debug.Log($"배치 완료된 인덱스 : {i}");                     // 배치 완료된 인덱스 출력
+                finishedObjectArray[i] = draggedObject;                                 // 배치 완료된 오브젝트 삽입
+                finishedObjectArray[i].layer = ignoreLeftClickLayer;                    // 레이어를 "IgnoreLeftClick"으로 변경
+                Debug.Log($"배치 완료된 인덱스 & 오브젝트 : \n{i}_{finishedObjectArray[i]}"); // 배치 완료된 인덱스 및 오브젝트 출력
                 break;
             }
         }
 
-        ResetSkewer();                                                  // 변수 초기화
+        // 변수 초기화
+        ResetSkewer();
     }
 
     /// <summary>
@@ -461,7 +471,8 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        ResetAllHole();                                                         // 선택 가능 구멍 초기화
+        // 선택 가능 구멍 초기화
+        ResetAllHole();
     }
 
     /// <summary>
@@ -619,10 +630,14 @@ public class PlayerController : MonoBehaviour
     /// <param name="three">세번째 구멍 선택 가능 여부</param>
     void SaveCheeseHole(bool one, bool two, bool three)
     {
-        
+        // 구멍 선택 가능 여부 저장
         woodenSkewer.canChooseCheeseHole1 = one;
         woodenSkewer.canChooseCheeseHole2 = two;
         woodenSkewer.canChooseCheeseHole3 = three;
+
+        // 구멍 중 하나라도 배치 완료된 경우
+        if (!one || !two || !three)
+            OnDeploy(cheeseAndBacon);
     }
 
     /// <summary>
@@ -633,10 +648,14 @@ public class PlayerController : MonoBehaviour
     /// <param name="three">세번째 구멍 선택 가능 여부</param>
     void SaveBaconHole(bool one, bool two, bool three)
     {
-
+        // 구멍 선택 가능 여부 저장
         woodenSkewer.canChooseBaconHole1 = one;
         woodenSkewer.canChooseBaconHole2 = two;
         woodenSkewer.canChooseBaconHole3 = three;
+
+        // 구멍 중 하나라도 배치 완료된 경우
+        if (!one || !two || !three)
+            OnDeploy(cheeseAndBacon);
     }
 
     // 초기화 관련 함수 -----------------------------------------------------------
