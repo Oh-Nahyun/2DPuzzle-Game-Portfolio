@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Card_36
   cardDescription: "3\uC810\uC9DC\uB9AC \uCE74\uB4DC\uC774\uB2E4."
-  cardIcon: {fileID: 318568274, guid: 889c988ba114f4bef8020de8bdb68b3a, type: 3}
+  cardIcon: {fileID: 1729324878, guid: 889c988ba114f4bef8020de8bdb68b3a, type: 3}
   cardScore: 3
   cardInfoArray:
   - {fileID: 1295105871270319848, guid: 3685998b61276435785e95706cca1407, type: 3}

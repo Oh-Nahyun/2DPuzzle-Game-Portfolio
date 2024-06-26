@@ -7,63 +7,65 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// 카드의 데이터 배열
     /// </summary>
-    CardData[] cardDatabase;
+    public CardData[] cardDatabase;
 
     /// <summary>
     /// 현재 카드
     /// </summary>
     CardData currentCard;
 
-    //void Start()
-    //{
-    //    DrawRandomCard();
-    //}
+    /// <summary>
+    /// 카드 오브젝트
+    /// </summary>
+    CardObject cardObject;
 
-    //// 랜덤한 카드를 뽑는 함수
-    //public void DrawRandomCard()
-    //{
-    //    if (cardDatabase.Length == 0)
-    //    {
-    //        Debug.LogWarning("Card database is empty!");
-    //        return;
-    //    }
+    /// <summary>
+    /// 플레이어 컨트롤러
+    /// </summary>
+    PlayerController playerController;
 
-    //    int randomIndex = Random.Range(0, cardDatabase.Length);
-    //    currentCard = cardDatabase[randomIndex];
-    //    Debug.Log($"Drawn Card: {currentCard.cardName}, Description: {currentCard.description}, Attack: {currentCard.attackPower}, Defense: {currentCard.defensePower}");
+    private void Awake()
+    {
+        cardObject = FindAnyObjectByType<CardObject>();
+        playerController = FindAnyObjectByType<PlayerController>();
+    }
 
-    //    // 여기서 currentCard를 UI에 표시하는 로직을 추가할 수 있습니다.
-    //    // DisplayCard(currentCard);
-    //}
+    void Start()
+    {
+        DrawRandomCard(); ///////////////////////////////////////////////////////////////////////////////
+    }
 
-    //// 두 카드가 같은지 비교하는 함수
-    //public bool IsSameCard(CardData card)
-    //{
-    //    if (currentCard == null)
-    //    {
-    //        Debug.LogWarning("No card has been drawn yet!");
-    //        return false;
-    //    }
+    /// <summary>
+    /// 랜덤으로 카드를 뽑는 함수
+    /// </summary>
+    public void DrawRandomCard()
+    {
+        // 카드의 데이터 배열이 빈 경우
+        if (cardDatabase.Length == 0)
+        {
+            Debug.LogWarning("Card database is empty!");
+            return;
+        }
 
-    //    return currentCard.cardName == card.cardName;
-    //}
+        // 랜덤으로 카드 뽑기
+        int randomIndex = Random.Range(0, cardDatabase.Length); // 랜덤 인덱스
+        currentCard = cardDatabase[randomIndex];                // 현재 카드 = 카드 배열에서 임의로 뽑은 카드
+        cardObject.ChangeCardSprite(currentCard);               // 현재 카드의 스프라이트로 변경
+        Debug.Log($"Drawn Card: {currentCard.cardName}, Score: {currentCard.cardScore}");
+    }
 
-    //// 예제: 다른 스크립트에서 이 함수를 호출할 수 있습니다.
-    //public void CheckIfSameCard(CardData card)
-    //{
-    //    if (IsSameCard(card))
-    //    {
-    //        Debug.Log("The cards are the same!");
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("The cards are different.");
-    //    }
-    //}
+    /// <summary>
+    /// 카드와 플레이어가 만든 꼬치가 같은지 비교하는 함수
+    /// </summary>
+    /// <returns>같으면 true, 다르면 false</returns>
+    public bool IsSameCard()
+    {
+        if (currentCard == null)
+        {
+            Debug.LogWarning("No card has been drawn yet!");
+            return false;
+        }
 
-    //void DisplayCard(CardData cardData)
-    //{
-    //    // 여기서 카드 데이터를 기반으로 실제 카드를 UI에 표시하는 로직을 구현합니다.
-    //    // 예를 들어, UI 텍스트나 이미지 컴포넌트를 사용하여 카드 정보를 화면에 출력
-    //}
+        return currentCard.cardInfoArray == playerController.finishedObjectArray;
+    }
 }

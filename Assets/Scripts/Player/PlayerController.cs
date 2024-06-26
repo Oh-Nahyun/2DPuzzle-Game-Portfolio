@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 배치 완료된 오브젝트 배열
     /// </summary>
-    GameObject[] finishedObjectArray;
+    public GameObject[] finishedObjectArray;
 
     /// <summary>
     /// 오브젝트의 원래 레이어
