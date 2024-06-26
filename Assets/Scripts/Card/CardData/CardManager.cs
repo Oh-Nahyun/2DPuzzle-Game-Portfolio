@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class CardManager : MonoBehaviour
 {
-    //public CardData[] cardDatabase;
-    //private CardData currentCard;
+    /// <summary>
+    /// 카드의 데이터 배열
+    /// </summary>
+    CardData[] cardDatabase;
+
+    /// <summary>
+    /// 현재 카드
+    /// </summary>
+    CardData currentCard;
 
     //void Start()
     //{

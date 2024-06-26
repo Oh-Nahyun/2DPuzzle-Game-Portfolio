@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae9a0d9ed13fb49dda653f9d3412b0a9, type: 3}
-  m_Name: New Card Data
+  m_Name: Card_32
   m_EditorClassIdentifier: 
-  cardName: "\uCE74\uB4DC"
-  cardDescription: "\uC124\uBA85"
-  cardIcon: {fileID: -593730823, guid: 6280d5dabcdca489baf93481045da8ba, type: 3}
+  cardName: Card_32
+  cardDescription: "3\uC810\uC9DC\uB9AC \uCE74\uB4DC\uC774\uB2E4."
+  cardIcon: {fileID: 1526565556, guid: b35ca2a12c94b45619a17ff49d8bf7a3, type: 3}
+  cardScore: 3
   cardInfoArray:
-  - {fileID: 0}
+  - {fileID: 1295105871270319848, guid: 3685998b61276435785e95706cca1407, type: 3}

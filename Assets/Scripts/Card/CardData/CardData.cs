@@ -10,5 +10,6 @@ public class CardData : ScriptableObject
     public string cardName = "카드";
     public string cardDescription = "설명";
     public Sprite cardIcon;
+    public int cardScore = 0;
     public GameObject[] cardInfoArray;
 }
