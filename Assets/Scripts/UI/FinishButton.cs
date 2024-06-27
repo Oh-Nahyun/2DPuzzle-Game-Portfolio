@@ -11,6 +11,11 @@ public class FinishButton : MonoBehaviour
     Button finishButton;
 
     /// <summary>
+    /// 카드와 일치하지 않음을 알리는 안내 패널 오브젝트
+    /// </summary>
+    public GameObject infoPanel;
+
+    /// <summary>
     /// 카드 매니저
     /// </summary>
     CardManager cardManager;
@@ -23,10 +28,33 @@ public class FinishButton : MonoBehaviour
         // [FINISH] 버튼이 눌려지면 AddListener로 등록한 함수 실행
         finishButton.onClick.AddListener(() =>
         {
-            if (cardManager.IsSameCard())
-            {
-                ///////////////////////////////////////////////////////////////////////////////
-            }
+            CheckCard();
         });
+    }
+
+    void CheckCard()
+    {
+        if (!cardManager.IsSameCard())
+        {
+            StopAllCoroutines();
+            StartCoroutine(ShowInfoPanel());
+            Debug.Log("<< 카드 불일치 >>");
+        }
+        else
+        {
+            Debug.Log("<< 카드 일치 >>");
+            ///////////////////////////////////////////////////////////////////////////////
+        }
+    }
+
+    /// <summary>
+    /// 안내 패널을 일정 시간동안 보여주는 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator ShowInfoPanel()
+    {
+        infoPanel.SetActive(true);
+        yield return new WaitForSeconds(1.0f);
+        infoPanel.SetActive(false);
     }
 }
