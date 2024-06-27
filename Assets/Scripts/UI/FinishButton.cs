@@ -20,6 +20,11 @@ public class FinishButton : MonoBehaviour
     /// </summary>
     CardManager cardManager;
 
+    /// <summary>
+    /// 플레이어 텍스트
+    /// </summary>
+    public PlayerText playerText;
+
     private void Awake()
     {
         finishButton = GetComponent<Button>();
@@ -43,7 +48,17 @@ public class FinishButton : MonoBehaviour
         else
         {
             Debug.Log("<< 카드 일치 >>");
-            ///////////////////////////////////////////////////////////////////////////////
+
+            if (!playerText.IsSameText())
+            {
+                Debug.Log("<< 텍스트 불일치 >>");
+            }
+            else
+            {
+                Debug.Log("<< 텍스트 일치 >>");
+                Debug.Log("<< FINISH >>");
+                ///////////////////////////////////////////////////////////////////////////////
+            }
         }
     }
 

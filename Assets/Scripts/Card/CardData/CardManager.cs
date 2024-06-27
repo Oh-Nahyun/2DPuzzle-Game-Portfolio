@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class CardManager : MonoBehaviour
@@ -20,6 +21,11 @@ public class CardManager : MonoBehaviour
     CardObject cardObject;
 
     /// <summary>
+    /// 카드 힌트 UI
+    /// </summary>
+    // Hint hintUI;
+
+    /// <summary>
     /// 플레이어 컨트롤러
     /// </summary>
     PlayerController playerController;
@@ -27,12 +33,8 @@ public class CardManager : MonoBehaviour
     private void Awake()
     {
         cardObject = FindAnyObjectByType<CardObject>();
+        // hintUI = FindAnyObjectByType<Hint>();
         playerController = FindAnyObjectByType<PlayerController>();
-    }
-
-    void Start()
-    {
-        DrawRandomCard(); ///////////////////////////////////////////////////////////////////////////////
     }
 
     /// <summary>
@@ -51,6 +53,7 @@ public class CardManager : MonoBehaviour
         int randomIndex = Random.Range(0, cardDatabase.Length); // 랜덤 인덱스
         currentCard = cardDatabase[randomIndex];                // 현재 카드 = 카드 배열에서 임의로 뽑은 카드
         cardObject.ChangeCardSprite(currentCard);               // 현재 카드의 스프라이트로 변경
+        // hintUI.ChangeHintSprite(currentCard);                // UI 스프라이트 변경
 
         // 카드 정보 출력 (확인용)
         Debug.Log($"Drawn Card: {currentCard.cardName}, \nDescription: {currentCard.cardDescription}, \nScore: {currentCard.cardScore}");

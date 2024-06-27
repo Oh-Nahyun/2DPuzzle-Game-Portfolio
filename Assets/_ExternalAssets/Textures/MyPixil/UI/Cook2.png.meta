@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b35ca2a12c94b45619a17ff49d8bf7a3
+guid: 96ef5150ea0a943cdb506a92eb00d996
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 600
+  spritePixelsToUnits: 400
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -123,85 +123,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 31
+      name: Cook2_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 2548
-        width: 2452
-        height: 2452
+        x: 1198
+        y: 1598
+        width: 1005
+        height: 1744
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7220b5b61c2194a9db4a4565e34b8eec
-      internalID: -526645955
+      spriteID: e7a594b9c62c74f51a79d9c3ee9eb6b2
+      internalID: -1241082199
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 32
+      name: Cook2_1
       rect:
         serializedVersion: 2
-        x: 2548
-        y: 2548
-        width: 2452
-        height: 2452
+        x: 2948
+        y: 1547
+        width: 1006
+        height: 1737
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 737dec78841e74a2fa4b498f13fe609f
-      internalID: -920411559
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: 33
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 2452
-        height: 2452
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8befca023e48443f59925f4ff79ec79d
-      internalID: 1289526301
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: 34
-      rect:
-        serializedVersion: 2
-        x: 2548
-        y: 0
-        width: 2452
-        height: 2452
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 51a75ac56f897452dae4528d1a29e746
-      internalID: 319821759
+      spriteID: 862c1f7df76054cea9454431bd496f9b
+      internalID: 14541510
       vertices: []
       indices: 
       edges: []
@@ -217,10 +175,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      31: -526645955
-      32: -920411559
-      33: 1289526301
-      34: 319821759
+      Cook2_0: -1241082199
+      Cook2_1: 14541510
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
