@@ -39,7 +39,7 @@ public class PlayerText : MonoBehaviour
             // 텍스트 비교
             if (playerText.text == correctText)
             {
-                result = true;    // 같은 경우 true
+                result = true;
             }
         }
 
