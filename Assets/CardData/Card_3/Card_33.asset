@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae9a0d9ed13fb49dda653f9d3412b0a9, type: 3}
-  m_Name: Card_34
+  m_Name: Card_33
   m_EditorClassIdentifier: 
-  cardName: Card_34
-  cardDescription: "3\uC810\uC9DC\uB9AC \uCE74\uB4DC\uC774\uB2E4."
-  cardIcon: {fileID: 319821759, guid: b35ca2a12c94b45619a17ff49d8bf7a3, type: 3}
+  cardName: Card_33
+  cardDescription: "[Shrimp] 3\uC810\uC9DC\uB9AC \uCE74\uB4DC\uC774\uB2E4."
+  cardIcon: {fileID: 1289526301, guid: b35ca2a12c94b45619a17ff49d8bf7a3, type: 3}
   cardScore: 3
   cardInfoArray:
-  - {fileID: 6369838691753674336, guid: 831de0f6668a3434894779d074334018, type: 3}
+  - {fileID: 5306827040407129411, guid: d610aad8ec94b44548a9a7b93e1d0b7c, type: 3}

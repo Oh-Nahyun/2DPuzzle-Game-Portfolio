@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae9a0d9ed13fb49dda653f9d3412b0a9, type: 3}
-  m_Name: Card_31
+  m_Name: Card_34
   m_EditorClassIdentifier: 
-  cardName: Card_31
-  cardDescription: "3\uC810\uC9DC\uB9AC \uCE74\uB4DC\uC774\uB2E4."
-  cardIcon: {fileID: -526645955, guid: b35ca2a12c94b45619a17ff49d8bf7a3, type: 3}
+  cardName: Card_34
+  cardDescription: "[Meat] 3\uC810\uC9DC\uB9AC \uCE74\uB4DC\uC774\uB2E4."
+  cardIcon: {fileID: 319821759, guid: b35ca2a12c94b45619a17ff49d8bf7a3, type: 3}
   cardScore: 3
   cardInfoArray:
-  - {fileID: 7639703930161404129, guid: d4d0121354d2b4dccb80e64d772ecb3d, type: 3}
+  - {fileID: 6369838691753674336, guid: 831de0f6668a3434894779d074334018, type: 3}

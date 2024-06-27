@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9a0d9ed13fb49dda653f9d3412b0a9, type: 3}
+  m_Name: Card_49
+  m_EditorClassIdentifier: 
+  cardName: Card_49
+  cardDescription: "[Tomato-Meat-Pepper-Shrimp] 4\uC810\uC9DC\uB9AC \uCE74\uB4DC\uC774\uB2E4."
+  cardIcon: {fileID: 1841070184, guid: 05a6476ef09ef4dbf8047022c56095b1, type: 3}
+  cardScore: 4
+  cardInfoArray:
+  - {fileID: 1295105871270319848, guid: 3685998b61276435785e95706cca1407, type: 3}
+  - {fileID: 6369838691753674336, guid: 831de0f6668a3434894779d074334018, type: 3}
+  - {fileID: 7639703930161404129, guid: d4d0121354d2b4dccb80e64d772ecb3d, type: 3}
+  - {fileID: 5306827040407129411, guid: d610aad8ec94b44548a9a7b93e1d0b7c, type: 3}
