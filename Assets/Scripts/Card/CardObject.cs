@@ -7,7 +7,7 @@ public class CardObject : MonoBehaviour
     /// <summary>
     /// 스프라이트 렌더러
     /// </summary>
-    SpriteRenderer spriteRenderer = null;
+    SpriteRenderer spriteRenderer;
 
     private void Awake()
     {

@@ -21,20 +21,20 @@ public class CardManager : MonoBehaviour
     CardObject cardObject;
 
     /// <summary>
-    /// 카드 힌트 UI
-    /// </summary>
-    // Hint hintUI;
-
-    /// <summary>
     /// 플레이어 컨트롤러
     /// </summary>
     PlayerController playerController;
 
+    /// <summary>
+    /// AI
+    /// </summary>
+    AI ai;
+
     private void Awake()
     {
         cardObject = FindAnyObjectByType<CardObject>();
-        // hintUI = FindAnyObjectByType<Hint>();
         playerController = FindAnyObjectByType<PlayerController>();
+        ai = FindAnyObjectByType<AI>();
     }
 
     /// <summary>
@@ -42,8 +42,8 @@ public class CardManager : MonoBehaviour
     /// </summary>
     public void DrawRandomCard()
     {
-        // 카드의 데이터 배열이 빈 경우
-        if (cardDatabase.Length == 0)
+        // 카드 혹은 카드의 데이터 배열이 빈 경우
+        if (cardDatabase == null || cardDatabase.Length == 0)
         {
             // Debug.LogWarning("Card database is empty!");
             return;
@@ -53,7 +53,7 @@ public class CardManager : MonoBehaviour
         int randomIndex = Random.Range(0, cardDatabase.Length); // 랜덤 인덱스
         currentCard = cardDatabase[randomIndex];                // 현재 카드 = 카드 배열에서 임의로 뽑은 카드
         cardObject.ChangeCardSprite(currentCard);               // 현재 카드의 스프라이트로 변경
-        // hintUI.ChangeHintSprite(currentCard);                // UI 스프라이트 변경
+        ai.playSpeed = currentCard.cardInfoArray.Length * 5.0f; // AI의 플레이 속도 설정
 
         // 카드 정보 출력 (확인용)
         Debug.Log($"Drawn Card: {currentCard.cardName}, \nDescription: {currentCard.cardDescription}, \nScore: {currentCard.cardScore}");
@@ -69,19 +69,26 @@ public class CardManager : MonoBehaviour
 
         if (currentCard == null)
         {
-            // Debug.LogWarning("No card has been drawn yet!");
             result = false;
         }
         else
         {
-            // 카드와 플레이어의 꼬치의 배열이 같은지 확인
-            for (int i = 0; i < currentCard.cardInfoArray.Length; i++)
+            int index = currentCard.cardInfoArray.Length - 1;
+            if (playerController.finishedObjectArray[index] == null)
             {
-                // Debug.Log($"Card: {currentCard.cardInfoArray[i].name}");
-                // Debug.Log($"Player: {playerController.finishedObjectArray[i].name}");
-                if (currentCard.cardInfoArray[i].name != playerController.finishedObjectArray[i].name)
+                result = false;
+            }
+            else
+            {
+                // 카드와 플레이어의 꼬치의 배열이 같은지 확인
+                for (int i = 0; i < currentCard.cardInfoArray.Length; i++)
                 {
-                    result = false; // 하나라도 같은 위치에 다른 재료가 있으면 false 
+                    // Debug.Log($"Card: {currentCard.cardInfoArray[i].name}");
+                    // Debug.Log($"Player: {playerController.finishedObjectArray[i].name}");
+                    if (currentCard.cardInfoArray[i].name != playerController.finishedObjectArray[i].name)
+                    {
+                        result = false; // 하나라도 같은 위치에 다른 재료가 있으면 false
+                    }
                 }
             }
         }

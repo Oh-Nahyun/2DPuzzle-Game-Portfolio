@@ -10,12 +10,30 @@ public class AI : MonoBehaviour
     public float playSpeed = 10.0f;
 
     /// <summary>
+    /// 게임 매니저
+    /// </summary>
+    GameManager gameManager; ////////////////////////////////////////////////////////////////////////////////
+
+    private void Awake()
+    {
+        ////////////////////////////////////////////////////////////////////////////////
+    }
+
+    /// <summary>
+    /// AI의 게임 플레이 함수
+    /// </summary>
+    public void PlayGameAI()
+    {
+        StartCoroutine(playGameAI());
+    }
+
+    /// <summary>
     /// AI의 게임 플레이 코루틴
     /// </summary>
     IEnumerator playGameAI()
     {
         yield return new WaitForSeconds(playSpeed);
-        Debug.Log("<< AI Win >>");
+        Debug.Log("<< Winner : AI >>");
         ////////////////////////////////////////////////////////////////////////////////
     }
 }

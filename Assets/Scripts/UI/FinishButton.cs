@@ -18,7 +18,7 @@ public class FinishButton : MonoBehaviour
     /// <summary>
     /// 카드 매니저
     /// </summary>
-    CardManager cardManager;
+    public CardManager cardManager;
 
     /// <summary>
     /// 플레이어 텍스트
@@ -28,7 +28,6 @@ public class FinishButton : MonoBehaviour
     private void Awake()
     {
         finishButton = GetComponent<Button>();
-        cardManager = FindAnyObjectByType<CardManager>();
 
         // [FINISH] 버튼이 눌려지면 AddListener로 등록한 함수 실행
         finishButton.onClick.AddListener(() =>
@@ -56,7 +55,7 @@ public class FinishButton : MonoBehaviour
             else
             {
                 Debug.Log("<< 텍스트 일치 >>");
-                Debug.Log("<< FINISH >>");
+                Debug.Log("<< Winner : Player >>");
                 ///////////////////////////////////////////////////////////////////////////////
             }
         }
