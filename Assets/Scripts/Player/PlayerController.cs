@@ -837,29 +837,29 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     // [완료] 버튼을 누른 경우 처리 함수
     /// </summary>
-    //void isTheEnd()
-    //{
-    //    // 접시까지의 거리 (y좌표)
-    //    float endPosition = 10.0f;
+    public void isTheEnd()
+    {
+        // 접시까지의 거리 (y좌표)
+        float endPosition = 10.0f;
 
-    //    // 꼬치 막대 위치 이동
-    //    Vector2 skewerPosition = woodenSkewer.transform.position;
-    //    skewerPosition = new Vector2(0, skewerPosition.y + endPosition * Time.deltaTime);
+        // 꼬치 막대 위치 이동
+        Vector2 skewerPosition = woodenSkewer.transform.position;
+        skewerPosition = new Vector2(0, skewerPosition.y + endPosition * Time.deltaTime);
 
-    //    // 배치 완료된 재료들 위치 이동
-    //    for (int i = 0; i < finishedObjectArray.Length; i++)
-    //    {
-    //        if (finishedObjectArray[i] != null)
-    //        {
-    //            Vector2 ingredientPosition = finishedObjectArray[i].transform.position;
-    //            ingredientPosition = new Vector2(0, ingredientPosition.y + endPosition * Time.deltaTime);
-    //        }
-    //        else
-    //        {
-    //            Debug.Log("[버튼] 모든 재료 배치 완료");
-    //            break;
-    //        }
-    //    }
-    //}
+        // 배치 완료된 재료들 위치 이동
+        for (int i = 0; i < finishedObjectArray.Length; i++)
+        {
+            if (finishedObjectArray[i] != null)
+            {
+                Vector2 ingredientPosition = finishedObjectArray[i].transform.position;
+                ingredientPosition = new Vector2(0, ingredientPosition.y + endPosition * Time.deltaTime);
+            }
+            else
+            {
+                Debug.Log("[버튼] 모든 재료 배치 완료");
+                break;
+            }
+        }
+    }
 }
 

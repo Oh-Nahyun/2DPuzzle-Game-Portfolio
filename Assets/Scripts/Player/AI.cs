@@ -12,12 +12,7 @@ public class AI : MonoBehaviour
     /// <summary>
     /// 게임 매니저
     /// </summary>
-    GameManager gameManager; ////////////////////////////////////////////////////////////////////////////////
-
-    private void Awake()
-    {
-        ////////////////////////////////////////////////////////////////////////////////
-    }
+    public GameManager gameManager;
 
     /// <summary>
     /// AI의 게임 플레이 함수
@@ -33,7 +28,7 @@ public class AI : MonoBehaviour
     IEnumerator playGameAI()
     {
         yield return new WaitForSeconds(playSpeed);
+        gameManager.onGameFinish?.Invoke(2);
         Debug.Log("<< Winner : AI >>");
-        ////////////////////////////////////////////////////////////////////////////////
     }
 }

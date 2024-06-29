@@ -25,6 +25,11 @@ public class FinishButton : MonoBehaviour
     /// </summary>
     public PlayerText playerText;
 
+    /// <summary>
+    /// 게임 매니저
+    /// </summary>
+    public GameManager gameManager;
+
     private void Awake()
     {
         finishButton = GetComponent<Button>();
@@ -56,7 +61,7 @@ public class FinishButton : MonoBehaviour
             {
                 Debug.Log("<< 텍스트 일치 >>");
                 Debug.Log("<< Winner : Player >>");
-                ///////////////////////////////////////////////////////////////////////////////
+                gameManager.onGameFinish?.Invoke(1);
             }
         }
     }

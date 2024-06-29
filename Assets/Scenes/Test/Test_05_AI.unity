@@ -405,6 +405,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &775141922 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 411901715060905238, guid: e9ac11a6334844dd2a53d401be16ed5a, type: 3}
+  m_PrefabInstance: {fileID: 6492412318875167715}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4381722776c2427ba4a0915d07d5883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &891962129
 GameObject:
   m_ObjectHideFlags: 0
@@ -1591,6 +1602,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2760340403566227753, guid: 30f433ed5d6a64c41ac0df18a6c6263d, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 775141922}
     - target: {fileID: 3050227486202422155, guid: 30f433ed5d6a64c41ac0df18a6c6263d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1673,6 +1688,10 @@ PrefabInstance:
       propertyPath: cardManager
       value: 
       objectReference: {fileID: 2042644074}
+    - target: {fileID: 525594439070457476, guid: 9384308e48ed6428cbe6a1768a958006, type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 775141922}
     - target: {fileID: 3083883260830308299, guid: 9384308e48ed6428cbe6a1768a958006, type: 3}
       propertyPath: m_Name
       value: WriteTextPanel
