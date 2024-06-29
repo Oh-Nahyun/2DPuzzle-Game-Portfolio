@@ -1677,6 +1677,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WriteTextPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 3083883260830308299, guid: 9384308e48ed6428cbe6a1768a958006, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5337175864763905870, guid: 9384308e48ed6428cbe6a1768a958006, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
