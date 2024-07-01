@@ -29,6 +29,5 @@ public class AI : MonoBehaviour
     {
         yield return new WaitForSeconds(playSpeed);
         gameManager.onGameFinish?.Invoke(2);
-        Debug.Log("<< Winner : AI >>");
     }
 }

@@ -11,6 +11,11 @@ public class PlayerText : MonoBehaviour
     /// </summary>
     TextMeshProUGUI playerText;
 
+    /// <summary>
+    /// 플레이어가 작성한 텍스트의 해시 코드 (텍스트 비교 오류 해결을 위해 사용)
+    /// </summary>
+    const int playerHashCode = 470909301;
+
     private void Awake()
     {
         playerText = GetComponent<TextMeshProUGUI>();
@@ -25,7 +30,7 @@ public class PlayerText : MonoBehaviour
         bool result = true;
 
         // 텍스트 비교
-        if (playerText.text.GetHashCode() != 470909301)
+        if (playerText.text.GetHashCode() != playerHashCode)
         {
             result = false;
         }

@@ -832,31 +832,37 @@ public class PlayerController : MonoBehaviour
         // Debug.Log("[Hole 3]을 클릭했습니다.");
     }
 
-    // 미완성 함수 ===============================================================
+    // 꼬치 완성 함수 -------------------------------------------------------------
 
     /// <summary>
-    // [완료] 버튼을 누른 경우 처리 함수
+    // [FINISH] 버튼을 누른 경우 처리 함수
     /// </summary>
     public void isTheEnd()
     {
         // 접시까지의 거리 (y좌표)
-        float endPosition = 10.0f;
+        float endPosition = 15.0f;
+        float specialPosition = endPosition / 3; // 미리 계산
 
         // 꼬치 막대 위치 이동
-        Vector2 skewerPosition = woodenSkewer.transform.position;
-        skewerPosition = new Vector2(0, skewerPosition.y + endPosition * Time.deltaTime);
+        woodenSkewer.gameObject.transform.position += new Vector3(0, endPosition, 0);
 
         // 배치 완료된 재료들 위치 이동
         for (int i = 0; i < finishedObjectArray.Length; i++)
         {
             if (finishedObjectArray[i] != null)
             {
-                Vector2 ingredientPosition = finishedObjectArray[i].transform.position;
-                ingredientPosition = new Vector2(0, ingredientPosition.y + endPosition * Time.deltaTime);
+                if (finishedObjectArray[i].name == "Cheese" || finishedObjectArray[i].name == "Bacon")
+                {
+                    finishedObjectArray[i].transform.position += new Vector3(0, specialPosition, 0);
+                }
+                else
+                {
+                    finishedObjectArray[i].transform.position += new Vector3(0, endPosition, 0);
+                }
             }
             else
             {
-                Debug.Log("[버튼] 모든 재료 배치 완료");
+                // Debug.Log("[FINISH] 모든 재료 배치 완료");
                 break;
             }
         }

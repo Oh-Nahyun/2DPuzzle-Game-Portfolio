@@ -47,20 +47,19 @@ public class FinishButton : MonoBehaviour
         {
             StopAllCoroutines();
             StartCoroutine(ShowInfoPanel());
-            Debug.Log("<< 카드 불일치 >>");
+            // Debug.Log("<< 카드 불일치 >>");
         }
         else
         {
-            Debug.Log("<< 카드 일치 >>");
+            // Debug.Log("<< 카드 일치 >>");
 
             if (!playerText.IsSameText())
             {
-                Debug.Log("<< 텍스트 불일치 >>");
+                // Debug.Log("<< 텍스트 불일치 >>");
             }
             else
             {
-                Debug.Log("<< 텍스트 일치 >>");
-                Debug.Log("<< Winner : Player >>");
+                // Debug.Log("<< 텍스트 일치 >>");
                 gameManager.onGameFinish?.Invoke(1);
             }
         }
