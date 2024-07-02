@@ -21,6 +21,11 @@ public class GameManager : MonoBehaviour
     CardManager cardManager;
 
     /// <summary>
+    /// 플레이어가 [FINISH] 버튼을 눌렀는지 아닌지 확인용 변수
+    /// </summary>
+    public bool isPlayerFinish = false;
+
+    /// <summary>
     /// 게임 종료를 알리는 델리게이트
     /// (int : winner 표시용 변수 (1 : Player, 2 : AI))
     /// </summary>
@@ -35,6 +40,11 @@ public class GameManager : MonoBehaviour
     /// 이동에 걸리는 시간 (초 단위)
     /// </summary>
     public float duration = 5.0f;
+
+    /// <summary>
+    /// 점수 패널 오브젝트
+    /// </summary>
+    public GameObject scorePanel;
 
     /// <summary>
     /// AI
@@ -63,7 +73,7 @@ public class GameManager : MonoBehaviour
         mainCamera = Camera.main;
 
         // 델리게이트 연결하기
-        onGameFinish = (index) => GameFinish(index);
+        onGameFinish += (index) => GameFinish(index);
     }
 
     private void Start()
@@ -77,6 +87,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     IEnumerator GameStart()
     {
+        // 점수 패널 비활성화
+        scorePanel.SetActive(false);
+
         // [SHOUT] 버튼 비활성화
         shoutButton.gameObject.SetActive(false);
 
@@ -84,6 +97,9 @@ public class GameManager : MonoBehaviour
         countDown.SetActive(true);
         yield return new WaitForSeconds(1.0f);
         countDown.SetActive(false);
+
+        // Player 플레이 종료 변수 초기화
+        isPlayerFinish = false;
 
         // [SHOUT] 버튼 활성화
         shoutButton.gameObject.SetActive(true);
@@ -115,11 +131,13 @@ public class GameManager : MonoBehaviour
             // Player가 이긴 경우
             Debug.Log("<< Winner : Player >>");
             player.isTheEnd();
+            player.AddPlayerScore(cardManager.currentCard.cardScore);
         }
         else if (index == 2)
         {
             // AI가 이긴 경우
             Debug.Log("<< Winner : AI >>");
+            ai.AddAIScore(cardManager.currentCard.cardScore);
         }
     }
 
@@ -143,5 +161,8 @@ public class GameManager : MonoBehaviour
 
         // 마지막 위치를 정확히 맞춤
         mainCamera.transform.position = targetPosition;
+
+        // 점수 패널 활성화
+        scorePanel.SetActive(true);
     }
 }

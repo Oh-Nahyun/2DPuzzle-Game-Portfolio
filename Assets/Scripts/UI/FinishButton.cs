@@ -60,6 +60,7 @@ public class FinishButton : MonoBehaviour
             else
             {
                 // Debug.Log("<< 텍스트 일치 >>");
+                gameManager.isPlayerFinish = true;
                 gameManager.onGameFinish?.Invoke(1);
             }
         }

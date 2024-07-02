@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -59,6 +60,33 @@ public class PlayerController : MonoBehaviour
     /// Shift 키가 눌렸는지 안눌렸는지 확인용 변수
     /// </summary>
     bool isShiftPressed = false;
+
+    /// <summary>
+    /// 플레이어의 점수
+    /// </summary>
+    int playerScore = 0;
+
+    /// <summary>
+    /// 플레이어의 점수 확인 및 설정용 프로퍼티
+    /// </summary>
+    public int PlayerScore
+    {
+        get => playerScore; // 읽기는 public
+        private set         // 쓰기는 private
+        {
+            if (playerScore != value)
+            {
+                playerScore = Math.Min(value, 999);         // 최대 점수 999
+                onPlayerScoreChange?.Invoke(playerScore);   // 이 델리게이트에 함수를 등록한 모든 대상에게 변경된 점수를 알림
+            }
+        }
+    }
+
+    /// <summary>
+    /// 플레이어의 점수가 변경되었음을 알리는 델리게이트
+    /// (int : 변경된 점수)
+    /// </summary>
+    public Action<int> onPlayerScoreChange;
 
     /// <summary>
     /// 꼬치 막대
@@ -866,6 +894,17 @@ public class PlayerController : MonoBehaviour
                 break;
             }
         }
+    }
+
+    // 점수 획득 함수 -------------------------------------------------------------
+
+    /// <summary>
+    /// 플레이어의 점수를 추가해주는 함수
+    /// </summary>
+    /// <param name="getScore">새로 얻은 점수</param>
+    public void AddPlayerScore(int getScore)
+    {
+        PlayerScore += getScore;
     }
 }
 

@@ -13,7 +13,7 @@ public class CardManager : MonoBehaviour
     /// <summary>
     /// 현재 카드
     /// </summary>
-    CardData currentCard;
+    public CardData currentCard;
 
     /// <summary>
     /// 카드 오브젝트
