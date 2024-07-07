@@ -47,6 +47,11 @@ public class GameManager : MonoBehaviour
     public GameObject scorePanel;
 
     /// <summary>
+    /// [NEXT] 버튼
+    /// </summary>
+    public GameObject nextButton;
+
+    /// <summary>
     /// AI
     /// </summary>
     AI ai;
@@ -78,17 +83,35 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        GameStart();
+    }
+
+    /// <summary>
+    /// 게임 시작 처리 함수
+    /// </summary>
+    public void GameStart()
+    {
+        // 메인 카메라 위치 초기화
+        mainCamera.transform.position = new Vector3(0, 0, -10.0f);
+
+        // 꼬치 막대 및 재료 위치 초기화
+        player.isStartAgain();
+
+        // 게임 시작 코루틴 시작
         StopAllCoroutines();
-        StartCoroutine(GameStart());
+        StartCoroutine(GameStartCoroutine());
     }
 
     /// <summary>
     /// 게임 시작 코루틴
     /// </summary>
-    IEnumerator GameStart()
+    IEnumerator GameStartCoroutine()
     {
         // 점수 패널 비활성화
         scorePanel.SetActive(false);
+
+        // [NEXT] 버튼 비활성화
+        nextButton.SetActive(false);
 
         // [SHOUT] 버튼 비활성화
         shoutButton.gameObject.SetActive(false);
@@ -164,5 +187,8 @@ public class GameManager : MonoBehaviour
 
         // 점수 패널 활성화
         scorePanel.SetActive(true);
+
+        // [NEXT] 버튼 활성화
+        nextButton.SetActive(true);
     }
 }

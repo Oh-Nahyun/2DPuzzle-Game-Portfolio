@@ -44,7 +44,7 @@ public class AIScore : MonoBehaviour
         // 변수 초기화
         goalScore = 0;
         currentScore = 0.0f;
-        aiScore.text = "AIScore : 000";
+        aiScore.text = "AI : 000";
     }
 
     private void Update()
@@ -58,7 +58,7 @@ public class AIScore : MonoBehaviour
             currentScore = Mathf.Min(currentScore, goalScore);
 
             // 소수점 출력 안하기
-            aiScore.text = $"AIScore : {currentScore:f0}";
+            aiScore.text = $"AI : {currentScore:f0}";
         }
     }
 

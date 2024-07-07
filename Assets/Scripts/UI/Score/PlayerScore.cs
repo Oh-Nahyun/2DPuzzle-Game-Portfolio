@@ -44,7 +44,7 @@ public class PlayerScore : MonoBehaviour
         // 변수 초기화
         goalScore = 0;
         currentScore = 0.0f;
-        playerScore.text = "PlayerScore : 000";
+        playerScore.text = "Player : 000";
     }
 
     private void Update()
@@ -58,7 +58,7 @@ public class PlayerScore : MonoBehaviour
             currentScore = Mathf.Min(currentScore, goalScore);
 
             // 소수점 출력 안하기
-            playerScore.text = $"PlayerScore : {currentScore:f0}";
+            playerScore.text = $"Player : {currentScore:f0}";
         }
     }
 

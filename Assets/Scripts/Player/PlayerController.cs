@@ -471,7 +471,7 @@ public class PlayerController : MonoBehaviour
             {
                 finishedObjectArray[i] = draggedObject;                                 // 배치 완료된 오브젝트 삽입
                 finishedObjectArray[i].layer = ignoreLeftClickLayer;                    // 레이어를 "IgnoreLeftClick"으로 변경
-                Debug.Log($"배치 완료된 인덱스 & 오브젝트 : \n{i}_{finishedObjectArray[i]}"); // 배치 완료된 인덱스 및 오브젝트 출력
+                //Debug.Log($"배치 완료된 인덱스 & 오브젝트 : \n{i}_{finishedObjectArray[i]}"); // 배치 완료된 인덱스 및 오브젝트 출력
                 break;
             }
         }
@@ -493,12 +493,12 @@ public class PlayerController : MonoBehaviour
         }
 
         // 배치 취소 처리
-        for (int i = finishedObjectArray.Length - 1; i >= 0; i--)               // 인덱스가 큰 순서대로 확인
+        for (int i = finishedObjectArray.Length - 1; i >= 0; i--)                       // 인덱스가 큰 순서대로 확인
         {
-            if (finishedObjectArray[i] != null)                                 // 배열 중 null이 아닌 곳이 있는 경우
+            if (finishedObjectArray[i] != null)                                         // 배열 중 null이 아닌 곳이 있는 경우
             {
-                originalPosition = OriginalPosition(finishedObjectArray[i]);    // 원래 위치 재설정
-                originalRotation = OriginalRotation(finishedObjectArray[i]);    // 원래 각도 재설정
+                originalPosition = OriginalPosition(finishedObjectArray[i]);            // 원래 위치 재설정
+                originalRotation = OriginalRotation(finishedObjectArray[i]);            // 원래 각도 재설정
 
                 #region [각 재료마다의 배치 취소 처리 과정]
                 if (finishedObjectArray[i].name != "Cheese" && finishedObjectArray[i].name != "Bacon") // [일반 재료의 경우]
@@ -568,10 +568,10 @@ public class PlayerController : MonoBehaviour
                 }
                 #endregion
 
-                finishedObjectArray[i].layer = originalLayer;                   // 레이어를 "originalLayer"으로 변경
-                finishedObjectArray[i] = null;                                  // 배치 취소된 오브젝트는 배열에서 삭제
+                finishedObjectArray[i].layer = originalLayer;                           // 레이어를 "originalLayer"으로 변경
+                finishedObjectArray[i] = null;                                          // 배치 취소된 오브젝트는 배열에서 삭제
 
-                Debug.Log($"배치 취소된 인덱스 : {i}");                             // 배치 취소된 인덱스 출력
+                //Debug.Log($"배치 취소된 인덱스 & 오브젝트 : \n{i}_{finishedObjectArray[i]}"); // 배치 취소된 인덱스 및 오브젝트 출력
                 break;
             }
         }
@@ -863,13 +863,13 @@ public class PlayerController : MonoBehaviour
     // 꼬치 완성 함수 -------------------------------------------------------------
 
     /// <summary>
-    // [FINISH] 버튼을 누른 경우 처리 함수
+    /// [FINISH] 버튼을 누른 경우 처리 함수
     /// </summary>
     public void isTheEnd()
     {
         // 접시까지의 거리 (y좌표)
         float endPosition = 15.0f;
-        float specialPosition = endPosition / 3; // 미리 계산
+        float specialPosition = endPosition / 3; // 나눗셈 미리 계산
 
         // 꼬치 막대 위치 이동
         woodenSkewer.gameObject.transform.position += new Vector3(0, endPosition, 0);
@@ -893,6 +893,30 @@ public class PlayerController : MonoBehaviour
                 // Debug.Log("[FINISH] 모든 재료 배치 완료");
                 break;
             }
+        }
+    }
+
+    /// <summary>
+    /// [Next] 버튼을 누른 경우 처리 함수
+    /// </summary>
+    public void isStartAgain()
+    {
+        // 꼬치 막대 위치 초기화
+        woodenSkewer.gameObject.transform.position = new Vector3(0, -0.7f, 0);
+
+        // 배치 완료된 재료들 위치 초기화
+        for (int i = finishedObjectArray.Length - 1; i >= 0; i--)
+        {
+            // OnCancel 메서드를 직접 호출
+            InputAction.CallbackContext context = new InputAction.CallbackContext();
+            OnCancel(context);
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            //ingredients.cheese.CheeseState = Cheese.CheeseMode.Normal;
+            //ingredients.bacon.BaconState = Bacon.BaconMode.Normal;
+            //SetHoleState(finishedObjectArray[i], true, true, true);
+            //woodenSkewer.deployFirstHole1 = false;
+            //woodenSkewer.deployFirstHole3 = false;
         }
     }
 
