@@ -16,9 +16,29 @@ public class CardManager : MonoBehaviour
     public CardData currentCard;
 
     /// <summary>
+    /// AI의 플레이 속도
+    /// </summary>
+    public float aiPlaySpeed = 5.0f;
+
+    /// <summary>
+    /// 카드 인덱스 리스트
+    /// </summary>
+    public List<int> cardIndex;
+
+    /// <summary>
+    /// 랜덤 인덱스
+    /// </summary>
+    int randomIndex;
+
+    /// <summary>
     /// 카드 오브젝트
     /// </summary>
     CardObject cardObject;
+
+    /// <summary>
+    /// AI
+    /// </summary>
+    AI ai;
 
     /// <summary>
     /// 플레이어 컨트롤러
@@ -26,15 +46,30 @@ public class CardManager : MonoBehaviour
     PlayerController playerController;
 
     /// <summary>
-    /// AI
+    /// 게임 매니저
     /// </summary>
-    AI ai;
+    public GameManager gameManager;
 
     private void Awake()
     {
         cardObject = FindAnyObjectByType<CardObject>();
         playerController = FindAnyObjectByType<PlayerController>();
         ai = FindAnyObjectByType<AI>();
+    }
+
+    private void Start()
+    {
+        // 리스트 초기화
+        cardIndex = new List<int>();
+
+        // 0부터 cardDatabase의 길이만큼 리스트에 추가
+        for (int i = 0; i < cardDatabase.Length; i++)
+        {
+            cardIndex.Add(i);
+        }
+
+        // 랜덤 인덱스 뽑기
+        randomIndex = Random.Range(0, cardDatabase.Length);
     }
 
     /// <summary>
@@ -50,13 +85,39 @@ public class CardManager : MonoBehaviour
         }
 
         // 랜덤으로 카드 뽑기
-        int randomIndex = Random.Range(0, cardDatabase.Length); // 랜덤 인덱스
-        currentCard = cardDatabase[randomIndex];                // 현재 카드 = 카드 배열에서 임의로 뽑은 카드
-        cardObject.ChangeCardSprite(currentCard);               // 현재 카드의 스프라이트로 변경
-        ai.playSpeed = currentCard.cardInfoArray.Length * 5.0f; // AI의 플레이 속도 설정
+        if (cardIndex.Contains(randomIndex))
+        {
+            // 해당 랜덤 인덱스를 가지고 있는 경우
+            currentCard = cardDatabase[randomIndex];                        // 현재 카드 = 카드 배열에서 임의로 뽑은 카드
+            cardObject.ChangeCardSprite(currentCard);                       // 현재 카드의 스프라이트로 변경
+            ai.playSpeed = currentCard.cardInfoArray.Length * aiPlaySpeed;  // AI의 플레이 속도 설정
+            cardIndex.Remove(randomIndex);                                  // 카드 인덱스 리스트에서 삭제
 
-        // 카드 정보 출력 (확인용)
-        Debug.Log($"Drawn Card: {currentCard.cardName}, \nDescription: {currentCard.cardDescription}, \nScore: {currentCard.cardScore}");
+            // 카드 정보 출력 (확인용)
+            Debug.Log($"Drawn Card: {currentCard.cardName}, \nDescription: {currentCard.cardDescription}, \nScore: {currentCard.cardScore}");
+
+            // 리스트 출력 (확인용)
+            //foreach (int number in cardIndex)
+            //{
+            //    Debug.Log(number);
+            //}
+        }
+        else
+        {
+            // 해당 랜덤 인덱스를 가지고 있지 않은 경우
+            if (cardIndex.Count == 0)
+            {
+                Debug.Log("----- The End -----");
+                gameManager.isFinal = true;         // 게임 종료 표시
+                gameManager.onGameEnd.Invoke();     // 게임 종료 알림
+                return;
+            }
+            else
+            {
+                randomIndex = Random.Range(0, cardDatabase.Length);
+                DrawRandomCard();
+            }
+        }
     }
 
     /// <summary>

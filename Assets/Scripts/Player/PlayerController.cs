@@ -910,13 +910,6 @@ public class PlayerController : MonoBehaviour
             // OnCancel 메서드를 직접 호출
             InputAction.CallbackContext context = new InputAction.CallbackContext();
             OnCancel(context);
-
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //ingredients.cheese.CheeseState = Cheese.CheeseMode.Normal;
-            //ingredients.bacon.BaconState = Bacon.BaconMode.Normal;
-            //SetHoleState(finishedObjectArray[i], true, true, true);
-            //woodenSkewer.deployFirstHole1 = false;
-            //woodenSkewer.deployFirstHole3 = false;
         }
     }
 

@@ -22,7 +22,7 @@ public class ShoutButton : MonoBehaviour
         // [SHOUT] 버튼이 눌려지면 AddListener로 등록한 함수 실행
         shoutButton.onClick.AddListener(() =>
         {
-            textPanel.SetActive(true); // 텍스트 패널 활성화
+            textPanel.SetActive(true);  // 텍스트 패널 활성화
         });
     }
 }

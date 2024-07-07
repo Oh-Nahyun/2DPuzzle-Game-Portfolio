@@ -44,3 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4381722776c2427ba4a0915d07d5883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  countDown: {fileID: 0}
+  isPlayerFinish: 0
+  textPanel: {fileID: 0}
+  duration: 3
+  scorePanel: {fileID: 0}
+  nextButton: {fileID: 0}
+  mainCamera: {fileID: 0}

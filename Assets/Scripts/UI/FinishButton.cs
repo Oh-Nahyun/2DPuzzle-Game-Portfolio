@@ -61,7 +61,7 @@ public class FinishButton : MonoBehaviour
             {
                 // Debug.Log("<< 텍스트 일치 >>");
                 gameManager.isPlayerFinish = true;
-                gameManager.onGameFinish?.Invoke(1);
+                gameManager.onGameFinish?.Invoke(1);    // 플레이어 승리 알림
             }
         }
     }

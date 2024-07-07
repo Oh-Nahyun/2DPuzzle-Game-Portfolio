@@ -136,6 +136,7 @@ MonoBehaviour:
   infoPanel: {fileID: 0}
   cardManager: {fileID: 0}
   playerText: {fileID: 8582036971040173373}
+  gameManager: {fileID: 0}
 --- !u!1 &2665023234597518806
 GameObject:
   m_ObjectHideFlags: 0

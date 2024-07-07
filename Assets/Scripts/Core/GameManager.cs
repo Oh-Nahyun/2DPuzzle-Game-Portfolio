@@ -26,15 +26,25 @@ public class GameManager : MonoBehaviour
     public bool isPlayerFinish = false;
 
     /// <summary>
-    /// 게임 종료를 알리는 델리게이트
+    /// 게임의 한 스테이지 종료를 알리는 델리게이트
     /// (int : winner 표시용 변수 (1 : Player, 2 : AI))
     /// </summary>
     public Action<int> onGameFinish;
 
     /// <summary>
+    /// 게임의 모든 스테이지 종료를 알리는 델리게이트
+    /// </summary>
+    public Action onGameEnd;
+
+    /// <summary>
     /// 텍스트 패널 오브젝트
     /// </summary>
     public GameObject textPanel;
+
+    /// <summary>
+    /// 플레이어 텍스트
+    /// </summary>
+    public PlayerText playerText;
 
     /// <summary>
     /// 이동에 걸리는 시간 (초 단위)
@@ -47,9 +57,24 @@ public class GameManager : MonoBehaviour
     public GameObject scorePanel;
 
     /// <summary>
+    /// AI 점수
+    /// </summary>
+    public AIScore aiScore;
+
+    /// <summary>
+    /// 플레이어 점수
+    /// </summary>
+    public PlayerScore playerScore;
+
+    /// <summary>
     /// [NEXT] 버튼
     /// </summary>
     public GameObject nextButton;
+
+    /// <summary>
+    /// 게임 종료되었는지 표시용 변수
+    /// </summary>
+    public bool isFinal = false;
 
     /// <summary>
     /// AI
@@ -79,6 +104,7 @@ public class GameManager : MonoBehaviour
 
         // 델리게이트 연결하기
         onGameFinish += (index) => GameFinish(index);
+        onGameEnd += GameEnd;
     }
 
     private void Start()
@@ -135,10 +161,14 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 게임 종료 처리 함수 (1 : Player, 2 : AI))
+    /// 게임의 한 스테이지 종료 처리 함수 (1 : Player, 2 : AI))
     /// </summary>
     void GameFinish(int index)
     {
+        ///// 플레이어 텍스트 초기화
+        textPanel.SetActive(true);
+        playerText.GetEmptyText();
+
         // 텍스트 패널 비활성화
         textPanel.SetActive(false);
 
@@ -188,7 +218,33 @@ public class GameManager : MonoBehaviour
         // 점수 패널 활성화
         scorePanel.SetActive(true);
 
-        // [NEXT] 버튼 활성화
-        nextButton.SetActive(true);
+        // 게임 종료 상태에 따른 [NEXT] 버튼 활성화 여부 결정
+        if (!isFinal)
+        {
+            nextButton.SetActive(true);
+        }
+        else
+        {
+            nextButton.SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// 게임의 모든 스테이지 종료 처리 함수
+    /// </summary>
+    void GameEnd()
+    {
+        // 최종 점수 비교
+        float aiFinalScore = aiScore.currentScore;
+        float playerFinalScore = playerScore.currentScore;
+
+        if (playerFinalScore >= aiFinalScore)
+        {
+            Debug.Log("<< Final Winner : Player >>");
+        }
+        else
+        {
+            Debug.Log("<< Final Winner : AI >>");
+        }
     }
 }

@@ -14,7 +14,7 @@ public class PlayerScore : MonoBehaviour
     /// <summary>
     /// 현재 보여지는 점수
     /// </summary>
-    float currentScore = 0.0f;
+    public float currentScore = 0.0f;
 
     /// <summary>
     /// 점수가 올라가는 속도
