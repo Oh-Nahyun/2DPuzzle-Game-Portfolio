@@ -915,7 +915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71fe19ead9d55490ba0b5ea16a933ee1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: Test_05_AI
+  nextSceneName: Main
   loadingBarSpeed: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

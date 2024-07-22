@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Main/Loading.unity
     guid: 5a55ec1392ff643bc8a61387abb6b74c
   - enabled: 1
-    path: Assets/Scenes/Test/Test_05_AI.unity
-    guid: 751b46bd2a0504348840acf23509f9ff
+    path: Assets/Scenes/Main/Main.unity
+    guid: 41d340a4696a141f7aaa0aaab459d5ac
   m_configObjects: {}
