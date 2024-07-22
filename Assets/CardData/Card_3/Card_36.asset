@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Card_36
   m_EditorClassIdentifier: 
   cardName: Card_36
-  cardDescription: "[Tomato-Shrimp] 3\uC810\uC9DC\uB9AC \uCE74\uB4DC\uC774\uB2E4."
+  cardDescription: '[Tomato-Shrimp]'
   cardIcon: {fileID: 1729324878, guid: 889c988ba114f4bef8020de8bdb68b3a, type: 3}
   cardScore: 3
   cardInfoArray:

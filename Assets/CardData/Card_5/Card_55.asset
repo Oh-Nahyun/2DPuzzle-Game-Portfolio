@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Card_55
   m_EditorClassIdentifier: 
   cardName: Card_55
-  cardDescription: "[Pepper-Bacon-Shrimp-Bacon-Bacon-Tomato] 5\uC810\uC9DC\uB9AC
-    \uCE74\uB4DC\uC774\uB2E4."
+  cardDescription: '[Pepper-Bacon-Shrimp-Bacon-Bacon-Tomato]'
   cardIcon: {fileID: 34546262, guid: 05a6476ef09ef4dbf8047022c56095b1, type: 3}
   cardScore: 5
   cardInfoArray:

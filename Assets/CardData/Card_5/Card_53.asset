@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Card_53
   m_EditorClassIdentifier: 
   cardName: Card_53
-  cardDescription: "[Meat-Bacon-Tomato-Bacon-Shrimp-Bacon] 5\uC810\uC9DC\uB9AC \uCE74\uB4DC\uC774\uB2E4."
+  cardDescription: '[Meat-Bacon-Tomato-Bacon-Shrimp-Bacon]'
   cardIcon: {fileID: 34546262, guid: 05a6476ef09ef4dbf8047022c56095b1, type: 3}
   cardScore: 5
   cardInfoArray:

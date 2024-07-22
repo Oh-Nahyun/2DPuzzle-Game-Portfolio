@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Card_54
   m_EditorClassIdentifier: 
   cardName: Card_54
-  cardDescription: "[Cheese-Pepper-Cheese-Cheese-Meat-Shrimp] 5\uC810\uC9DC\uB9AC
-    \uCE74\uB4DC\uC774\uB2E4."
+  cardDescription: '[Cheese-Pepper-Cheese-Cheese-Meat-Shrimp]'
   cardIcon: {fileID: 34546262, guid: 05a6476ef09ef4dbf8047022c56095b1, type: 3}
   cardScore: 5
   cardInfoArray:

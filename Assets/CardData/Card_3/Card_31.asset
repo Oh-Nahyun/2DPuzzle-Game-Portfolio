@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Card_31
   m_EditorClassIdentifier: 
   cardName: Card_31
-  cardDescription: "[Pepper] 3\uC810\uC9DC\uB9AC \uCE74\uB4DC\uC774\uB2E4."
+  cardDescription: '[Pepper]'
   cardIcon: {fileID: -526645955, guid: b35ca2a12c94b45619a17ff49d8bf7a3, type: 3}
   cardScore: 3
   cardInfoArray:

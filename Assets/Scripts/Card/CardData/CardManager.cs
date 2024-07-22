@@ -36,6 +36,11 @@ public class CardManager : MonoBehaviour
     CardObject cardObject;
 
     /// <summary>
+    /// 카드 정보
+    /// </summary>
+    public CardInfoText cardInfoText;
+
+    /// <summary>
     /// AI
     /// </summary>
     AI ai;
@@ -95,6 +100,7 @@ public class CardManager : MonoBehaviour
 
             // 카드 정보 출력 (확인용)
             Debug.Log($"Drawn Card: {currentCard.cardName}, \nDescription: {currentCard.cardDescription}, \nScore: {currentCard.cardScore}");
+            cardInfoText.cardInfo.text = $"{currentCard.cardDescription}";
 
             // 리스트 출력 (확인용)
             //foreach (int number in cardIndex)
