@@ -108,8 +108,7 @@ public class CardManager : MonoBehaviour
             if (cardIndex.Count == 0)
             {
                 Debug.Log("----- The End -----");
-                gameManager.isFinal = true;         // 게임 종료 표시
-                gameManager.onGameEnd.Invoke();     // 게임 종료 알림
+                gameManager.onGameEnd.Invoke();             // 게임 종료 알림
                 return;
             }
             else

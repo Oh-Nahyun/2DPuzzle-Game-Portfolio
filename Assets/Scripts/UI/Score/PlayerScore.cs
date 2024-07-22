@@ -62,6 +62,10 @@ public class PlayerScore : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 점수 갱신 함수
+    /// </summary>
+    /// <param name="newScore">새로운 점수</param>
     private void RefreshScore(int newScore)
     {
         goalScore = newScore;

@@ -57,6 +57,16 @@ public class GameManager : MonoBehaviour
     public GameObject scorePanel;
 
     /// <summary>
+    /// 우승자 패널 오브젝트
+    /// </summary>
+    public GameObject winnerPanel;
+
+    /// <summary>
+    /// 우승자 텍스트
+    /// </summary>
+    public WinnerText winnerText;
+
+    /// <summary>
     /// AI 점수
     /// </summary>
     public AIScore aiScore;
@@ -218,15 +228,8 @@ public class GameManager : MonoBehaviour
         // 점수 패널 활성화
         scorePanel.SetActive(true);
 
-        // 게임 종료 상태에 따른 [NEXT] 버튼 활성화 여부 결정
-        if (!isFinal)
-        {
-            nextButton.SetActive(true);
-        }
-        else
-        {
-            nextButton.SetActive(false);
-        }
+        // [NEXT] 버튼 활성화
+        nextButton.SetActive(true);
     }
 
     /// <summary>
@@ -241,10 +244,14 @@ public class GameManager : MonoBehaviour
         if (playerFinalScore >= aiFinalScore)
         {
             Debug.Log("<< Final Winner : Player >>");
+            winnerText.winner = "Player";
+            winnerPanel.SetActive(true);
         }
         else
         {
             Debug.Log("<< Final Winner : AI >>");
+            winnerText.winner = "AI";
+            winnerPanel.SetActive(true);
         }
     }
 }

@@ -5,24 +5,24 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameStartButton : MonoBehaviour
+public class GameEndButton : MonoBehaviour
 {
     /// <summary>
-    /// 타이틀씬이 끝나고 불려질 씬의 이름
+    /// 씬이 끝나고 불려질 씬의 이름
     /// </summary>
-    public string nextSceneName = "Loading";
+    public string nextSceneName = "GameTitle";
 
     /// <summary>
-    /// [GAME START] 버튼
+    /// [Game End] 버튼
     /// </summary>
-    Button startButton;
+    Button endButton;
 
     private void Awake()
     {
-        startButton = GetComponent<Button>();
+        endButton = GetComponent<Button>();
 
-        // [GAME START] 버튼이 눌려지면 AddListener로 등록한 함수 실행
-        startButton.onClick.AddListener(() =>
+        // [Game End] 버튼이 눌려지면 AddListener로 등록한 함수 실행
+        endButton.onClick.AddListener(() =>
         {
             LoadScene();
         });
